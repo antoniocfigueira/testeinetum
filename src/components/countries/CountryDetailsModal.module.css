@@ -25,7 +25,8 @@
   scrollbar-width: thin;
 }
 
-.closeButton {
+.closeButton,
+.favoriteButton {
   position: absolute;
   z-index: 2;
   top: var(--space-4);
@@ -48,10 +49,22 @@
     transform var(--transition-fast);
 }
 
-.closeButton:hover {
+.favoriteButton {
+  right: 66px;
+  color: var(--color-text-secondary);
+}
+
+.closeButton:hover,
+.favoriteButton:hover {
   color: var(--color-text-primary);
   background: var(--color-control-hover);
   transform: scale(1.04);
+}
+
+.favoriteActive,
+.favoriteActive:hover {
+  color: #ff375f;
+  background: var(--color-background-elevated);
 }
 
 .header {

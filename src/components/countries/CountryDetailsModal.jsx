@@ -1,5 +1,6 @@
 import {
   Coins,
+  Heart,
   Languages,
   Map,
   MapPin,
@@ -9,6 +10,7 @@ import {
 import { createElement, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import { formatInteger } from '../../utils/formatters.js'
+import useFavorites from '../../hooks/useFavorites.js'
 import WeatherPanel from '../weather/WeatherPanel.jsx'
 import styles from './CountryDetailsModal.module.css'
 
@@ -18,6 +20,8 @@ function joinValues(values, fallback = 'Não disponível') {
 
 function CountryDetailsModal({ country, onClose }) {
   const closeButtonRef = useRef(null)
+  const { isFavorite, toggleFavorite } = useFavorites()
+  const countryIsFavorite = isFavorite(country.id)
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow
@@ -97,6 +101,23 @@ function CountryDetailsModal({ country, onClose }) {
           type="button"
         >
           <X size={20} />
+        </button>
+
+        <button
+          aria-label={
+            countryIsFavorite
+              ? `Remover ${country.name} dos favoritos`
+              : `Adicionar ${country.name} aos favoritos`
+          }
+          aria-pressed={countryIsFavorite}
+          className={`${styles.favoriteButton} ${countryIsFavorite ? styles.favoriteActive : ''}`}
+          onClick={() => toggleFavorite(country)}
+          type="button"
+        >
+          <Heart
+            fill={countryIsFavorite ? 'currentColor' : 'none'}
+            size={20}
+          />
         </button>
 
         <header className={styles.header}>

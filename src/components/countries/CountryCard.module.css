@@ -1,4 +1,5 @@
 .card {
+  position: relative;
   min-width: 0;
   overflow: hidden;
   background: var(--color-surface-glass);
@@ -11,6 +12,47 @@
     border-color var(--transition-base),
     box-shadow var(--transition-slow),
     transform var(--transition-slow);
+}
+
+.favoriteButton {
+  position: absolute;
+  z-index: 3;
+  top: var(--space-3);
+  right: var(--space-3);
+  display: grid;
+  width: 40px;
+  height: 40px;
+  color: #ffffff;
+  background: rgb(28 28 30 / 48%);
+  border: 1px solid rgb(255 255 255 / 22%);
+  border-radius: 50%;
+  box-shadow: 0 5px 18px rgb(0 0 0 / 16%);
+  cursor: pointer;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  place-items: center;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.favoriteButton:hover {
+  background: rgb(28 28 30 / 68%);
+  transform: scale(1.08);
+}
+
+.favoriteButton:active {
+  transform: scale(0.94);
+}
+
+.favoriteActive {
+  color: #ff375f;
+  background: rgb(255 255 255 / 90%);
+}
+
+.favoriteActive:hover {
+  background: #ffffff;
 }
 
 .card:hover {

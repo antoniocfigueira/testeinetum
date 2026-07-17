@@ -1,4 +1,4 @@
-import { Coins, Flag, Languages, MapPin, Users } from 'lucide-react'
+import { Coins, Flag, Heart, Languages, MapPin, Users } from 'lucide-react'
 import { useState } from 'react'
 import { formatInteger } from '../../utils/formatters.js'
 import styles from './CountryCard.module.css'
@@ -7,7 +7,12 @@ function joinValues(values, fallback = 'Não disponível') {
   return values.filter(Boolean).join(', ') || fallback
 }
 
-function CountryCard({ country, onSelect }) {
+function CountryCard({
+  country,
+  isFavorite,
+  onSelect,
+  onToggleFavorite,
+}) {
   const [hasFlagError, setHasFlagError] = useState(false)
   const flagUrl = country.flag.svg || country.flag.png
   const currencyLabel = joinValues(
@@ -21,6 +26,19 @@ function CountryCard({ country, onSelect }) {
 
   return (
     <article className={styles.card}>
+      <button
+        aria-label={
+          isFavorite
+            ? `Remover ${country.name} dos favoritos`
+            : `Adicionar ${country.name} aos favoritos`
+        }
+        aria-pressed={isFavorite}
+        className={`${styles.favoriteButton} ${isFavorite ? styles.favoriteActive : ''}`}
+        onClick={() => onToggleFavorite(country)}
+        type="button"
+      >
+        <Heart fill={isFavorite ? 'currentColor' : 'none'} size={19} />
+      </button>
       <button
         aria-label={`Consultar detalhes de ${country.name}`}
         className={styles.cardButton}
