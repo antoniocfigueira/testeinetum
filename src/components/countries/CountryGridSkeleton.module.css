@@ -1,0 +1,154 @@
+.section {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.heading {
+  display: grid;
+  gap: var(--space-2);
+}
+
+.heading span:first-child,
+.heading span:last-child,
+.search,
+.flag,
+.title,
+.subtitle,
+.facts span,
+.line,
+.lineShort {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-control);
+}
+
+.heading span:first-child {
+  width: 120px;
+  height: 12px;
+  border-radius: var(--radius-pill);
+}
+
+.heading span:last-child {
+  width: min(72%, 360px);
+  height: 34px;
+  border-radius: var(--radius-sm);
+}
+
+.search {
+  width: min(100%, 760px);
+  height: 58px;
+  border-radius: var(--radius-lg);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: clamp(var(--space-4), 2vw, var(--space-6));
+}
+
+.card {
+  overflow: hidden;
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.flag {
+  height: 172px;
+}
+
+.content {
+  display: grid;
+  gap: var(--space-3);
+  padding: var(--space-5);
+}
+
+.title {
+  width: 64%;
+  height: 24px;
+  border-radius: var(--radius-sm);
+}
+
+.subtitle {
+  width: 44%;
+  height: 11px;
+  border-radius: var(--radius-pill);
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  margin-block: var(--space-2);
+}
+
+.facts span {
+  height: 58px;
+  border-radius: var(--radius-md);
+}
+
+.line,
+.lineShort {
+  height: 12px;
+  border-radius: var(--radius-pill);
+}
+
+.line {
+  width: 86%;
+}
+
+.lineShort {
+  width: 62%;
+}
+
+.heading span::after,
+.search::after,
+.flag::after,
+.title::after,
+.subtitle::after,
+.facts span::after,
+.line::after,
+.lineShort::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 20%,
+    var(--color-border-highlight) 48%,
+    transparent 76%
+  );
+  content: '';
+  transform: translateX(-100%);
+  animation: shimmer 1.45s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 600px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .card {
+    border-radius: var(--radius-lg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heading span::after,
+  .search::after,
+  .flag::after,
+  .title::after,
+  .subtitle::after,
+  .facts span::after,
+  .line::after,
+  .lineShort::after {
+    animation: none;
+  }
+}
+

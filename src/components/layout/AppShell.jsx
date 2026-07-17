@@ -4,7 +4,7 @@ import Header from './Header.jsx'
 import Sidebar from './Sidebar.jsx'
 import styles from './AppShell.module.css'
 
-function AppShell({ activePage, children, onLogout, user }) {
+function AppShell({ children, onLogout, user }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
 
   return (
@@ -29,7 +29,6 @@ function AppShell({ activePage, children, onLogout, user }) {
 
       <div className={styles.workspace}>
         <Header
-          activePage={activePage}
           onLogout={onLogout}
           onMenuOpen={() => setIsSidebarOpen(true)}
           user={user}

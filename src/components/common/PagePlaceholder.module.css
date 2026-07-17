@@ -1,31 +1,19 @@
 .page {
   display: grid;
-  min-height: min(620px, calc(100dvh - 210px));
-  align-content: center;
-  gap: var(--space-9);
+  align-content: start;
+  gap: var(--space-7);
+  padding-block: var(--space-2) var(--space-8);
 }
 
 .copy {
   max-width: 760px;
 }
 
-.eyebrow {
-  display: inline-flex;
-  padding: var(--space-1) var(--space-3);
-  color: var(--color-accent);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: var(--color-accent-soft);
-  border-radius: var(--radius-pill);
-}
-
 .copy h1 {
   max-width: 700px;
-  margin: var(--space-4) 0 var(--space-3);
+  margin: 0 0 var(--space-3);
   color: var(--color-text-primary);
-  font-size: clamp(2.75rem, 7vw, 5.75rem);
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
   font-weight: 750;
   letter-spacing: -0.065em;
   line-height: 0.96;
@@ -77,8 +65,8 @@
 
 @media (max-width: 600px) {
   .page {
-    min-height: calc(100dvh - 188px);
-    gap: var(--space-7);
+    gap: var(--space-6);
+    padding-block: 0 var(--space-6);
   }
 
   .visualCard {

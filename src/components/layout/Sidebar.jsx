@@ -49,31 +49,22 @@ function Sidebar({ isOpen, onClose }) {
         <span className={styles.navigationLabel}>Explorar</span>
         <ul className={styles.navigationList}>
           {NAVIGATION_ITEMS.map(({ icon: Icon, label, path }) => (
-              <li key={path}>
-                <NavLink
-                  className={({ isActive }) =>
-                    `${styles.navigationItem} ${isActive ? styles.active : ''}`
-                  }
-                  onClick={onClose}
-                  to={path}
-                >
-                  {createElement(Icon, { size: 20, strokeWidth: 2 })}
-                  <span>{label}</span>
-                </NavLink>
-              </li>
-            ))}
+            <li key={path}>
+              <NavLink
+                aria-label={label}
+                className={({ isActive }) =>
+                  `${styles.navigationItem} ${isActive ? styles.active : ''}`
+                }
+                onClick={onClose}
+                to={path}
+              >
+                {createElement(Icon, { size: 20, strokeWidth: 2 })}
+                <span>{label}</span>
+              </NavLink>
+            </li>
+          ))}
         </ul>
       </nav>
-
-      <div className={styles.tip}>
-        <span className={styles.tipIcon} aria-hidden="true">
-          ✦
-        </span>
-        <p>
-          <strong>Descobre sem limites</strong>
-          Explora países e guarda os teus destinos favoritos.
-        </p>
-      </div>
     </aside>
   )
 }

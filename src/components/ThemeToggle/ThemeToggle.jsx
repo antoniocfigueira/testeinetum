@@ -17,7 +17,6 @@ function ThemeToggle() {
       <span className={styles.icon} aria-hidden="true">
         {isDark ? <Sun size={18} strokeWidth={2} /> : <Moon size={18} strokeWidth={2} />}
       </span>
-      <span className={styles.label}>Modo {nextTheme}</span>
     </button>
   )
 }

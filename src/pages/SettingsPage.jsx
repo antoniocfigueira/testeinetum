@@ -5,7 +5,6 @@ function SettingsPage() {
   return (
     <PagePlaceholder
       description="Gere os teus dados de perfil, preferências visuais e opções da aplicação."
-      eyebrow="Preferências"
       icon={SlidersHorizontal}
       title="Definições da conta."
     />

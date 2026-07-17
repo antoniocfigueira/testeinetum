@@ -1,11 +1,10 @@
 import { createElement } from 'react'
 import styles from './PagePlaceholder.module.css'
 
-function PagePlaceholder({ description, eyebrow, icon, title }) {
+function PagePlaceholder({ description, icon, title }) {
   return (
     <section className={styles.page}>
       <div className={styles.copy}>
-        <span className={styles.eyebrow}>{eyebrow}</span>
         <h1>{title}</h1>
         <p>{description}</p>
       </div>

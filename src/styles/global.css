@@ -1,8 +1,40 @@
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('/fonts/sf-pro-text_light.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('/fonts/sf-pro-text_regular.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('/fonts/sf-pro-text_semibold.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: "SF Pro Text";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('/fonts/sf-pro-text_bold.woff2') format('woff2');
+}
+
 :root {
   color-scheme: light;
   font-family:
-    Inter, ui-sans-serif, -apple-system, BlinkMacSystemFont, "SF Pro Display",
-    "Helvetica Neue", "Segoe UI", sans-serif;
+    "SF Pro Text", "SF Pro Display", -apple-system, BlinkMacSystemFont,
+    "Helvetica Neue", "Segoe UI", ui-sans-serif, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 
@@ -126,6 +158,17 @@ body {
   transition:
     color var(--transition-base),
     background-color var(--transition-base);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family:
+    "SF Pro Text", -apple-system, BlinkMacSystemFont, "Helvetica Neue",
+    "Segoe UI", ui-sans-serif, sans-serif;
 }
 
 button,

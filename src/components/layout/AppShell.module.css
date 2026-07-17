@@ -2,7 +2,7 @@
   position: relative;
   display: grid;
   min-height: 100dvh;
-  grid-template-columns: 264px minmax(0, 1fr);
+  grid-template-columns: 96px minmax(0, 1fr);
   overflow: hidden;
   isolation: isolate;
 }

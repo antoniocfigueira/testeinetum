@@ -1,0 +1,111 @@
+.searchArea {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.heading h2 {
+  margin: 0;
+  color: var(--color-text-primary);
+  font-size: clamp(var(--font-size-xl), 4vw, var(--font-size-3xl));
+  letter-spacing: -0.045em;
+}
+
+.resultCount {
+  flex: 0 0 auto;
+  padding-bottom: var(--space-1);
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-sm);
+}
+
+.inputWrapper {
+  position: relative;
+  width: min(100%, 760px);
+}
+
+.inputWrapper input {
+  width: 100%;
+  height: 58px;
+  padding: 0 54px;
+  color: var(--color-text-primary);
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  outline: none;
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  transition:
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast);
+}
+
+.inputWrapper input::placeholder {
+  color: var(--color-text-tertiary);
+}
+
+.inputWrapper input:focus {
+  background: var(--color-surface);
+  border-color: var(--color-accent);
+  box-shadow:
+    0 0 0 4px var(--color-accent-soft),
+    var(--shadow-card);
+}
+
+.inputWrapper input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchIcon {
+  position: absolute;
+  z-index: 1;
+  top: 50%;
+  left: var(--space-5);
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  transform: translateY(-50%);
+}
+
+.inputWrapper button {
+  position: absolute;
+  top: 50%;
+  right: var(--space-3);
+  display: grid;
+  width: 36px;
+  height: 36px;
+  color: var(--color-text-secondary);
+  background: var(--color-control);
+  border-radius: 50%;
+  cursor: pointer;
+  place-items: center;
+  transform: translateY(-50%);
+}
+
+.inputWrapper button:hover {
+  color: var(--color-text-primary);
+  background: var(--color-control-hover);
+}
+
+@media (max-width: 600px) {
+  .heading {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .resultCount {
+    padding: 0;
+  }
+
+  .inputWrapper input {
+    height: 54px;
+    border-radius: var(--radius-md);
+  }
+}

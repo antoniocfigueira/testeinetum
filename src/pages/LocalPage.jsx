@@ -5,7 +5,6 @@ function LocalPage() {
   return (
     <PagePlaceholder
       description="Consulta contexto geográfico e meteorologia relevante para a tua localização."
-      eyebrow="Perto de ti"
       icon={MapPinned}
       title="Descobre o teu local."
     />

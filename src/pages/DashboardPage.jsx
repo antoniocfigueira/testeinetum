@@ -2,13 +2,18 @@ import {
   AlertTriangle,
   Globe2,
   Languages,
-  LoaderCircle,
   Map,
   RefreshCw,
+  SearchX,
   Users,
 } from 'lucide-react'
-import { createElement } from 'react'
+import { createElement, useMemo, useState } from 'react'
+import CountryGrid from '../components/countries/CountryGrid.jsx'
+import CountryGridSkeleton from '../components/countries/CountryGridSkeleton.jsx'
+import CountrySearch from '../components/countries/CountrySearch.jsx'
 import useCountries from '../hooks/useCountries.js'
+import useDebouncedValue from '../hooks/useDebouncedValue.js'
+import { countryMatchesSearch } from '../utils/countrySearch.js'
 import { formatCompactNumber, formatInteger } from '../utils/formatters.js'
 import styles from './DashboardPage.module.css'
 
@@ -50,12 +55,21 @@ function getDashboardStats(countries) {
 
 function DashboardPage() {
   const { countries, error, isLoading, retry } = useCountries()
-  const stats = getDashboardStats(countries)
+  const [searchQuery, setSearchQuery] = useState('')
+  const debouncedQuery = useDebouncedValue(searchQuery, 300)
+  const isSearchPending = searchQuery !== debouncedQuery
+  const stats = useMemo(() => getDashboardStats(countries), [countries])
+  const filteredCountries = useMemo(
+    () =>
+      countries.filter((country) =>
+        countryMatchesSearch(country, debouncedQuery),
+      ),
+    [countries, debouncedQuery],
+  )
 
   return (
     <section className={styles.dashboard}>
       <header className={styles.hero}>
-        <span className={styles.eyebrow}>A tua próxima aventura</span>
         <h1>O mundo está à tua espera.</h1>
         <p>
           Explora destinos, conhece novas culturas e reúne a informação
@@ -63,15 +77,7 @@ function DashboardPage() {
         </p>
       </header>
 
-      {isLoading && (
-        <div className={styles.statusPanel} aria-live="polite">
-          <LoaderCircle className={styles.spinner} size={28} />
-          <div>
-            <strong>A carregar o mundo</strong>
-            <p>Estamos a reunir os dados dos destinos.</p>
-          </div>
-        </div>
-      )}
+      {isLoading && <CountryGridSkeleton />}
 
       {error && (
         <div className={`${styles.statusPanel} ${styles.errorPanel}`} role="alert">
@@ -88,21 +94,47 @@ function DashboardPage() {
       )}
 
       {!isLoading && !error && (
-        <div className={styles.stats} aria-label="Resumo dos destinos disponíveis">
-          {stats.map(({ icon, label, value }) => (
-            <article className={styles.statCard} key={label}>
-              <span className={styles.statIcon} aria-hidden="true">
-                {createElement(icon, { size: 21, strokeWidth: 1.9 })}
-              </span>
-              <strong>{value}</strong>
-              <span>{label}</span>
-            </article>
-          ))}
-        </div>
+        <>
+          <div className={styles.stats} aria-label="Resumo dos destinos disponíveis">
+            {stats.map(({ icon, label, value }) => (
+              <article className={styles.statCard} key={label}>
+                <span className={styles.statIcon} aria-hidden="true">
+                  {createElement(icon, { size: 21, strokeWidth: 1.9 })}
+                </span>
+                <strong>{value}</strong>
+                <span>{label}</span>
+              </article>
+            ))}
+          </div>
+
+          <div className={styles.explorer} aria-busy={isSearchPending}>
+            <CountrySearch
+              isPending={isSearchPending}
+              onChange={setSearchQuery}
+              onClear={() => setSearchQuery('')}
+              resultCount={filteredCountries.length}
+              value={searchQuery}
+            />
+
+            {filteredCountries.length ? (
+              <CountryGrid countries={filteredCountries} />
+            ) : (
+              <div className={styles.emptyState} role="status">
+                <span aria-hidden="true">
+                  <SearchX size={28} />
+                </span>
+                <h3>Nenhum destino encontrado</h3>
+                <p>Experimenta pesquisar outro país, capital, moeda ou idioma.</p>
+                <button onClick={() => setSearchQuery('')} type="button">
+                  Limpar pesquisa
+                </button>
+              </div>
+            )}
+          </div>
+        </>
       )}
     </section>
   )
 }
 
 export default DashboardPage
-

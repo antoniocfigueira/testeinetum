@@ -1,30 +1,18 @@
 .dashboard {
   display: grid;
-  gap: clamp(var(--space-8), 7vw, var(--space-10));
-  padding-block: clamp(var(--space-7), 5vw, var(--space-10));
+  gap: clamp(var(--space-7), 4vw, var(--space-9));
+  padding-block: var(--space-2) var(--space-9);
 }
 
 .hero {
   max-width: 820px;
 }
 
-.eyebrow {
-  display: inline-flex;
-  padding: var(--space-1) var(--space-3);
-  color: var(--color-accent);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  background: var(--color-accent-soft);
-  border-radius: var(--radius-pill);
-}
-
 .hero h1 {
   max-width: 760px;
-  margin: var(--space-4) 0 var(--space-3);
+  margin: 0 0 var(--space-3);
   color: var(--color-text-primary);
-  font-size: clamp(2.75rem, 7vw, 5.75rem);
+  font-size: clamp(2.5rem, 6vw, 4.75rem);
   font-weight: 750;
   letter-spacing: -0.065em;
   line-height: 0.96;
@@ -70,11 +58,6 @@
   line-height: 1.5;
 }
 
-.spinner {
-  flex: 0 0 auto;
-  animation: spin 900ms linear infinite;
-}
-
 .errorPanel {
   color: var(--color-danger);
   border-color: rgb(255 59 48 / 16%);
@@ -96,6 +79,58 @@
   cursor: pointer;
 }
 
+.explorer {
+  display: grid;
+  gap: var(--space-7);
+}
+
+.emptyState {
+  display: grid;
+  min-height: 300px;
+  align-content: center;
+  justify-items: center;
+  padding: var(--space-7);
+  color: var(--color-text-secondary);
+  text-align: center;
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-card);
+}
+
+.emptyState > span {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 50%;
+  place-items: center;
+}
+
+.emptyState h3 {
+  margin: var(--space-4) 0 var(--space-2);
+  color: var(--color-text-primary);
+  font-size: var(--font-size-xl);
+}
+
+.emptyState p {
+  margin: 0;
+  line-height: 1.6;
+}
+
+.emptyState button {
+  min-height: 42px;
+  padding: 0 var(--space-5);
+  margin-top: var(--space-5);
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
 .stats {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -104,9 +139,9 @@
 
 .statCard {
   display: grid;
-  min-height: 170px;
+  min-height: 128px;
   align-content: space-between;
-  padding: var(--space-5);
+  padding: var(--space-4);
   background: var(--color-surface-glass);
   border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-xl);
@@ -117,8 +152,8 @@
 
 .statIcon {
   display: grid;
-  width: 42px;
-  height: 42px;
+  width: 36px;
+  height: 36px;
   color: var(--color-accent);
   background: var(--color-accent-soft);
   border-radius: var(--radius-md);
@@ -126,7 +161,7 @@
 }
 
 .statCard strong {
-  margin-top: var(--space-5);
+  margin-top: var(--space-3);
   color: var(--color-text-primary);
   font-size: clamp(var(--font-size-xl), 3vw, var(--font-size-2xl));
   letter-spacing: -0.04em;
@@ -138,12 +173,6 @@
   line-height: 1.4;
 }
 
-@keyframes spin {
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 @media (max-width: 1100px) {
   .stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -152,8 +181,8 @@
 
 @media (max-width: 600px) {
   .dashboard {
-    gap: var(--space-8);
-    padding-block: var(--space-5);
+    gap: var(--space-7);
+    padding-block: 0 var(--space-7);
   }
 
   .statusPanel {
@@ -176,13 +205,12 @@
   }
 
   .statCard {
-    min-height: 145px;
+    min-height: 120px;
     border-radius: var(--radius-lg);
   }
-}
 
-@media (prefers-reduced-motion: reduce) {
-  .spinner {
-    animation: none;
+  .emptyState {
+    min-height: 260px;
+    border-radius: var(--radius-lg);
   }
 }
