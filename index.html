@@ -8,6 +8,31 @@
       content="Inetum Travel — descubra países, destinos e meteorologia."
     />
     <meta name="theme-color" content="#f2f2f7" />
+    <script>
+      ;(() => {
+        const storageKey = 'inetum-travel-theme'
+        let savedTheme = null
+
+        try {
+          savedTheme = localStorage.getItem(storageKey)
+        } catch {
+          savedTheme = null
+        }
+
+        const theme =
+          savedTheme === 'light' || savedTheme === 'dark'
+            ? savedTheme
+            : matchMedia('(prefers-color-scheme: dark)').matches
+              ? 'dark'
+              : 'light'
+
+        document.documentElement.dataset.theme = theme
+        document.documentElement.style.colorScheme = theme
+        document
+          .querySelector('meta[name="theme-color"]')
+          .setAttribute('content', theme === 'dark' ? '#1c1c1e' : '#f2f2f7')
+      })()
+    </script>
     <title>Inetum Travel</title>
   </head>
   <body>
@@ -15,4 +40,3 @@
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
-

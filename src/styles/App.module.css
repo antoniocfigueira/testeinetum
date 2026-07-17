@@ -1,0 +1,118 @@
+.preview {
+  position: relative;
+  display: grid;
+  min-height: 100dvh;
+  place-items: center;
+  padding: var(--space-6);
+  isolation: isolate;
+}
+
+.preview::before,
+.preview::after {
+  position: fixed;
+  z-index: -1;
+  width: min(48vw, 620px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  content: '';
+  filter: blur(8px);
+  opacity: var(--gradient-opacity);
+  pointer-events: none;
+}
+
+.preview::before {
+  top: -22%;
+  right: -10%;
+  background: radial-gradient(circle, var(--color-gradient-blue), transparent 68%);
+  animation: float-gradient 14s ease-in-out infinite alternate;
+}
+
+.preview::after {
+  bottom: -28%;
+  left: -12%;
+  background: radial-gradient(circle, var(--color-gradient-purple), transparent 68%);
+  animation: float-gradient 18s ease-in-out -6s infinite alternate-reverse;
+}
+
+.card {
+  width: min(100%, 600px);
+  padding: clamp(var(--space-7), 7vw, var(--space-10));
+  text-align: center;
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(var(--blur-glass)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(150%);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  color: var(--color-accent);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-pill);
+}
+
+.title {
+  margin: var(--space-4) 0 var(--space-2);
+  color: var(--color-text-primary);
+  font-size: clamp(2.5rem, 9vw, 4.75rem);
+  font-weight: 750;
+  letter-spacing: -0.065em;
+  line-height: 0.98;
+}
+
+.description {
+  max-width: 440px;
+  margin: 0 auto;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-md);
+  line-height: 1.65;
+}
+
+.divider {
+  height: 1px;
+  margin: var(--space-7) 0 var(--space-5);
+  background: var(--color-separator);
+  border: 0;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+@keyframes float-gradient {
+  from {
+    transform: translate3d(-2%, -3%, 0) scale(0.94);
+  }
+
+  to {
+    transform: translate3d(4%, 5%, 0) scale(1.08);
+  }
+}
+
+@media (max-width: 600px) {
+  .preview {
+    padding: var(--space-4);
+  }
+
+  .card {
+    border-radius: var(--radius-xl);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .preview::before,
+  .preview::after {
+    animation: none;
+  }
+}
+
