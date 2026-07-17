@@ -1,20 +1,35 @@
-import { ArrowRight, ShieldCheck, Sparkles } from 'lucide-react'
+import { GoogleLogin } from '@react-oauth/google'
+import { AlertCircle, ShieldCheck, Sparkles } from 'lucide-react'
 import { Navigate, useLocation, useNavigate } from 'react-router-dom'
 import ThemeToggle from '../components/ThemeToggle/ThemeToggle.jsx'
+import useAuth from '../hooks/useAuth.js'
+import useTheme from '../hooks/useTheme.js'
 import styles from './PublicPage.module.css'
 
-function LoginPage({ isAuthenticated, onLogin }) {
+function LoginPage() {
+  const {
+    authError,
+    isAuthenticated,
+    isGoogleConfigured,
+    login,
+    reportLoginError,
+  } = useAuth()
+  const { isDark } = useTheme()
   const location = useLocation()
   const navigate = useNavigate()
-  const destination = location.state?.from?.pathname ?? '/dashboard'
+  const requestedLocation = location.state?.from
+  const destination = requestedLocation
+    ? `${requestedLocation.pathname}${requestedLocation.search}${requestedLocation.hash}`
+    : '/dashboard'
 
   if (isAuthenticated) {
     return <Navigate replace to="/dashboard" />
   }
 
-  const handlePreviewLogin = () => {
-    onLogin()
-    navigate(destination, { replace: true })
+  const handleGoogleSuccess = (credentialResponse) => {
+    if (login(credentialResponse)) {
+      navigate(destination, { replace: true })
+    }
   }
 
   return (
@@ -40,10 +55,38 @@ function LoginPage({ isAuthenticated, onLogin }) {
         <h1>Bem-vindo de volta</h1>
         <p>Inicia sessão para descobrires países e planeares a próxima viagem.</p>
 
-        <button className={styles.primaryButton} onClick={handlePreviewLogin} type="button">
-          Iniciar sessão
-          <ArrowRight size={18} />
-        </button>
+        <div className={styles.googleButton}>
+          {isGoogleConfigured ? (
+            <GoogleLogin
+              key={isDark ? 'dark' : 'light'}
+              locale="pt-PT"
+              logo_alignment="left"
+              onError={reportLoginError}
+              onSuccess={handleGoogleSuccess}
+              shape="pill"
+              size="large"
+              text="continue_with"
+              theme={isDark ? 'filled_black' : 'outline'}
+              width="320"
+            />
+          ) : (
+            <div className={styles.configurationNotice} role="alert">
+              Define <code>VITE_GOOGLE_CLIENT_ID</code> para ativar o início de
+              sessão Google.
+            </div>
+          )}
+        </div>
+
+        {authError && (
+          <div className={styles.authError} role="alert">
+            <AlertCircle aria-hidden="true" size={18} />
+            <span>{authError}</span>
+          </div>
+        )}
+
+        <small className={styles.securityNote}>
+          A autenticação é processada de forma segura pela Google.
+        </small>
       </section>
     </main>
   )
