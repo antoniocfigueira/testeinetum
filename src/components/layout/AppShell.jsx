@@ -4,13 +4,8 @@ import Header from './Header.jsx'
 import Sidebar from './Sidebar.jsx'
 import styles from './AppShell.module.css'
 
-function AppShell({ activePage, children, onLogout, onNavigate, user }) {
+function AppShell({ activePage, children, onLogout, user }) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false)
-
-  const handleNavigate = (page) => {
-    onNavigate(page)
-    setIsSidebarOpen(false)
-  }
 
   return (
     <div className={styles.shell}>
@@ -19,10 +14,8 @@ function AppShell({ activePage, children, onLogout, onNavigate, user }) {
       </a>
 
       <Sidebar
-        activePage={activePage}
         isOpen={isSidebarOpen}
         onClose={() => setIsSidebarOpen(false)}
-        onNavigate={handleNavigate}
       />
 
       {isSidebarOpen && (
@@ -53,4 +46,3 @@ function AppShell({ activePage, children, onLogout, onNavigate, user }) {
 }
 
 export default AppShell
-

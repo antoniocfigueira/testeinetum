@@ -7,16 +7,17 @@ import {
   X,
 } from 'lucide-react'
 import { createElement } from 'react'
+import { NavLink } from 'react-router-dom'
 import styles from './Sidebar.module.css'
 
 const NAVIGATION_ITEMS = [
-  { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { id: 'favorites', label: 'Favoritos', icon: Heart },
-  { id: 'local', label: 'Local', icon: MapPin },
-  { id: 'settings', label: 'Definições', icon: Settings },
+  { label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+  { label: 'Favoritos', icon: Heart, path: '/favorites' },
+  { label: 'Local', icon: MapPin, path: '/local' },
+  { label: 'Definições', icon: Settings, path: '/settings' },
 ]
 
-function Sidebar({ activePage, isOpen, onClose, onNavigate }) {
+function Sidebar({ isOpen, onClose }) {
   return (
     <aside
       aria-label="Navegação principal"
@@ -47,23 +48,20 @@ function Sidebar({ activePage, isOpen, onClose, onNavigate }) {
       <nav className={styles.navigation}>
         <span className={styles.navigationLabel}>Explorar</span>
         <ul className={styles.navigationList}>
-          {NAVIGATION_ITEMS.map(({ icon: Icon, id, label }) => {
-            const isActive = activePage === id
-
-            return (
-              <li key={id}>
-                <button
-                  aria-current={isActive ? 'page' : undefined}
-                  className={`${styles.navigationItem} ${isActive ? styles.active : ''}`}
-                  onClick={() => onNavigate(id)}
-                  type="button"
+          {NAVIGATION_ITEMS.map(({ icon: Icon, label, path }) => (
+              <li key={path}>
+                <NavLink
+                  className={({ isActive }) =>
+                    `${styles.navigationItem} ${isActive ? styles.active : ''}`
+                  }
+                  onClick={onClose}
+                  to={path}
                 >
                   {createElement(Icon, { size: 20, strokeWidth: 2 })}
                   <span>{label}</span>
-                </button>
+                </NavLink>
               </li>
-            )
-          })}
+            ))}
         </ul>
       </nav>
 

@@ -1,34 +1,13 @@
-import { ArrowRight, CheckCircle2, Compass } from 'lucide-react'
 import { useState } from 'react'
-import AppShell from './components/layout/AppShell.jsx'
-import styles from './styles/App.module.css'
-
-const PAGE_CONTENT = {
-  dashboard: {
-    eyebrow: 'A tua próxima aventura',
-    title: 'O mundo está à tua espera.',
-    description:
-      'Pesquisa países, roda o globo e encontra toda a informação necessária para preparar a próxima viagem.',
-  },
-  favorites: {
-    eyebrow: 'A tua coleção',
-    title: 'Destinos favoritos.',
-    description:
-      'Os países que guardares ficarão reunidos aqui para os consultares quando quiseres.',
-  },
-  local: {
-    eyebrow: 'Perto de ti',
-    title: 'Descobre o teu local.',
-    description:
-      'Consulta contexto geográfico e meteorologia relevante para a tua localização.',
-  },
-  settings: {
-    eyebrow: 'Preferências',
-    title: 'Definições da conta.',
-    description:
-      'Gere os teus dados de perfil, preferências visuais e opções da aplicação.',
-  },
-}
+import { Navigate, Route, Routes } from 'react-router-dom'
+import ApplicationLayout from './components/layout/ApplicationLayout.jsx'
+import ProtectedRoute from './components/routing/ProtectedRoute.jsx'
+import DashboardPage from './pages/DashboardPage.jsx'
+import FavoritesPage from './pages/FavoritesPage.jsx'
+import LocalPage from './pages/LocalPage.jsx'
+import LoginPage from './pages/LoginPage.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx'
+import SettingsPage from './pages/SettingsPage.jsx'
 
 const DEFAULT_USER = {
   name: 'Utilizador Inetum',
@@ -36,56 +15,42 @@ const DEFAULT_USER = {
 }
 
 function App() {
-  const [activePage, setActivePage] = useState('dashboard')
-  const [isSessionActive, setIsSessionActive] = useState(true)
-  const content = PAGE_CONTENT[activePage]
-
-  if (!isSessionActive) {
-    return (
-      <main className={styles.sessionPreview}>
-        <section className={styles.sessionCard}>
-          <span className={styles.sessionIcon} aria-hidden="true">
-            <CheckCircle2 size={28} />
-          </span>
-          <h1>Sessão terminada</h1>
-          <p>Volta quando quiseres para continuar a explorar novos destinos.</p>
-          <button onClick={() => setIsSessionActive(true)} type="button">
-            Iniciar nova sessão
-            <ArrowRight size={17} />
-          </button>
-        </section>
-      </main>
-    )
-  }
+  const [isAuthenticated, setIsAuthenticated] = useState(true)
 
   return (
-    <AppShell
-      activePage={activePage}
-      onLogout={() => setIsSessionActive(false)}
-      onNavigate={setActivePage}
-      user={DEFAULT_USER}
-    >
-      <section className={styles.pagePreview}>
-        <div className={styles.copy}>
-          <span className={styles.eyebrow}>{content.eyebrow}</span>
-          <h1>{content.title}</h1>
-          <p>{content.description}</p>
-        </div>
+    <Routes>
+      <Route
+        path="/login"
+        element={
+          <LoginPage
+            isAuthenticated={isAuthenticated}
+            onLogin={() => setIsAuthenticated(true)}
+          />
+        }
+      />
 
-        <div className={styles.previewCard}>
-          <span className={styles.previewIcon} aria-hidden="true">
-            <Compass size={30} />
-          </span>
-          <div>
-            <strong>Explora à tua maneira</strong>
-            <p>
-              Usa o menu para descobrir países, guardar favoritos e gerir as
-              tuas preferências.
-            </p>
-          </div>
-        </div>
-      </section>
-    </AppShell>
+      <Route element={<ProtectedRoute isAuthenticated={isAuthenticated} />}>
+        <Route
+          element={
+            <ApplicationLayout
+              onLogout={() => setIsAuthenticated(false)}
+              user={DEFAULT_USER}
+            />
+          }
+        >
+          <Route index element={<Navigate replace to="/dashboard" />} />
+          <Route path="dashboard" element={<DashboardPage />} />
+          <Route path="favorites" element={<FavoritesPage />} />
+          <Route path="local" element={<LocalPage />} />
+          <Route path="settings" element={<SettingsPage />} />
+        </Route>
+      </Route>
+
+      <Route
+        path="*"
+        element={<NotFoundPage isAuthenticated={isAuthenticated} />}
+      />
+    </Routes>
   )
 }
 
