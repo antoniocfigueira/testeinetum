@@ -11,6 +11,7 @@ import { createElement, lazy, Suspense, useMemo, useState } from 'react'
 import CountryGrid from '../components/countries/CountryGrid.jsx'
 import CountryGridSkeleton from '../components/countries/CountryGridSkeleton.jsx'
 import CountrySearch from '../components/countries/CountrySearch.jsx'
+import CountryDetailsModal from '../components/countries/CountryDetailsModal.jsx'
 import useCountries from '../hooks/useCountries.js'
 import useDebouncedValue from '../hooks/useDebouncedValue.js'
 import { countryMatchesSearch } from '../utils/countrySearch.js'
@@ -148,7 +149,10 @@ function DashboardPage() {
 
           <div className={styles.destinations}>
             {filteredCountries.length ? (
-              <CountryGrid countries={filteredCountries} />
+              <CountryGrid
+                countries={filteredCountries}
+                onSelectCountry={setSelectedCountry}
+              />
             ) : (
               <div className={styles.emptyState} role="status">
                 <span aria-hidden="true">
@@ -163,6 +167,13 @@ function DashboardPage() {
             )}
           </div>
         </>
+      )}
+
+      {selectedCountry && (
+        <CountryDetailsModal
+          country={selectedCountry}
+          onClose={() => setSelectedCountry(null)}
+        />
       )}
     </section>
   )

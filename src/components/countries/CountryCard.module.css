@@ -19,6 +19,27 @@
   transform: translateY(-6px) scale(1.012);
 }
 
+.card:focus-within {
+  border-color: var(--color-accent);
+  box-shadow:
+    0 0 0 4px var(--color-accent-soft),
+    var(--shadow-floating);
+}
+
+.cardButton {
+  display: block;
+  width: 100%;
+  padding: 0;
+  color: inherit;
+  text-align: left;
+  background: transparent;
+  cursor: pointer;
+}
+
+.cardButton:focus-visible {
+  outline: none;
+}
+
 .flagFrame {
   position: relative;
   display: grid;
@@ -171,4 +192,3 @@
     transform: none;
   }
 }
-

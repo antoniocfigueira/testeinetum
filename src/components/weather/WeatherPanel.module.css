@@ -1,0 +1,231 @@
+.panel {
+  padding: var(--space-5);
+  background: var(--color-accent-soft);
+  border: 1px solid color-mix(in srgb, var(--color-accent) 14%, transparent);
+  border-radius: var(--radius-xl);
+}
+
+.currentWeather {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.conditionIcon {
+  display: grid;
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
+  color: var(--color-accent);
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-xl);
+  place-items: center;
+}
+
+.conditionIcon img {
+  width: 82px;
+  height: 82px;
+}
+
+.currentWeather span,
+.currentWeather strong,
+.currentWeather p {
+  display: block;
+}
+
+.currentWeather span {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+}
+
+.currentWeather strong {
+  margin-top: 2px;
+  color: var(--color-text-primary);
+  font-size: clamp(2rem, 6vw, 3rem);
+  letter-spacing: -0.055em;
+  line-height: 1;
+}
+
+.currentWeather p {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+  text-transform: capitalize;
+}
+
+.weatherFacts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin: var(--space-5) 0 0;
+}
+
+.weatherFacts > div {
+  min-width: 0;
+  padding: var(--space-3);
+  background: var(--color-surface-glass);
+  border-radius: var(--radius-md);
+}
+
+.weatherFacts dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  color: var(--color-text-tertiary);
+  font-size: 0.6875rem;
+}
+
+.weatherFacts dt svg {
+  color: var(--color-accent);
+}
+
+.weatherFacts dd {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+}
+
+.error {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-danger);
+  background: color-mix(in srgb, var(--color-danger) 9%, var(--color-surface));
+  border-color: color-mix(in srgb, var(--color-danger) 18%, transparent);
+}
+
+.error strong {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.error p {
+  margin: var(--space-1) 0 0;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  line-height: 1.5;
+}
+
+.error button {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  color: var(--color-danger);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  background: color-mix(in srgb, var(--color-danger) 10%, transparent);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.loadingHeader {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.loadingHeader > div {
+  display: grid;
+  flex: 1;
+  gap: var(--space-2);
+}
+
+.skeletonIcon,
+.skeletonLine,
+.skeletonLineShort,
+.skeletonCard {
+  display: block;
+  background: linear-gradient(
+    100deg,
+    var(--color-control) 20%,
+    var(--color-control-hover) 42%,
+    var(--color-control) 64%
+  );
+  background-size: 240% 100%;
+  animation: weatherSkeleton 1.4s ease-in-out infinite;
+}
+
+.skeletonIcon {
+  width: 88px;
+  height: 88px;
+  flex: 0 0 88px;
+  border-radius: var(--radius-xl);
+}
+
+.skeletonLine {
+  width: 55%;
+  height: 24px;
+  border-radius: var(--radius-pill);
+}
+
+.skeletonLineShort {
+  width: 34%;
+  height: 14px;
+  border-radius: var(--radius-pill);
+}
+
+.loadingGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2);
+  margin-top: var(--space-5);
+}
+
+.skeletonCard {
+  height: 65px;
+  border-radius: var(--radius-md);
+}
+
+@keyframes weatherSkeleton {
+  to {
+    background-position: -140% 0;
+  }
+}
+
+@media (max-width: 640px) {
+  .panel {
+    padding: var(--space-4);
+    border-radius: var(--radius-lg);
+  }
+
+  .conditionIcon,
+  .skeletonIcon {
+    width: 72px;
+    height: 72px;
+    flex-basis: 72px;
+  }
+
+  .conditionIcon img {
+    width: 70px;
+    height: 70px;
+  }
+
+  .weatherFacts,
+  .loadingGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .error {
+    grid-template-columns: auto 1fr;
+  }
+
+  .error button {
+    grid-column: 1 / -1;
+    justify-content: center;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeletonIcon,
+  .skeletonLine,
+  .skeletonLineShort,
+  .skeletonCard {
+    animation: none;
+  }
+}

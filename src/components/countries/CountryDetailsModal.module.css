@@ -1,0 +1,217 @@
+.backdrop {
+  position: fixed;
+  z-index: 1000;
+  inset: 0;
+  display: grid;
+  padding: clamp(var(--space-3), 4vw, var(--space-7));
+  overflow-y: auto;
+  background: rgb(0 0 0 / 46%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  animation: backdropIn 220ms ease both;
+  place-items: center;
+}
+
+.modal {
+  position: relative;
+  width: min(100%, 860px);
+  max-height: calc(100dvh - clamp(24px, 8vw, 64px));
+  overflow-y: auto;
+  background: var(--color-background-elevated);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 32px 100px rgb(0 0 0 / 35%);
+  animation: modalIn 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  scrollbar-width: thin;
+}
+
+.closeButton {
+  position: absolute;
+  z-index: 2;
+  top: var(--space-4);
+  right: var(--space-4);
+  display: grid;
+  width: 42px;
+  height: 42px;
+  color: var(--color-text-secondary);
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: 50%;
+  box-shadow: var(--shadow-control-hover);
+  cursor: pointer;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  place-items: center;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.closeButton:hover {
+  color: var(--color-text-primary);
+  background: var(--color-control-hover);
+  transform: scale(1.04);
+}
+
+.header {
+  position: relative;
+  display: grid;
+  min-height: 250px;
+  align-items: end;
+  overflow: hidden;
+  padding: clamp(var(--space-5), 5vw, var(--space-8));
+  background: var(--color-control);
+}
+
+.flagFrame {
+  position: absolute;
+  inset: 0;
+}
+
+.flagFrame::after {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgb(0 0 0 / 78%), rgb(0 0 0 / 6%) 75%),
+    linear-gradient(to right, rgb(0 0 0 / 28%), transparent 70%);
+  content: '';
+}
+
+.flagFrame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.flagFrame > span {
+  display: grid;
+  height: 100%;
+  font-size: 5rem;
+  place-items: center;
+}
+
+.header > div:last-child {
+  position: relative;
+  z-index: 1;
+  max-width: 680px;
+}
+
+.header > div:last-child > span {
+  display: inline-block;
+  padding: var(--space-1) var(--space-3);
+  color: #ffffff;
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  background: rgb(28 28 30 / 48%);
+  border: 1px solid rgb(255 255 255 / 20%);
+  border-radius: var(--radius-pill);
+  backdrop-filter: blur(12px);
+}
+
+.header h2 {
+  margin: var(--space-3) 0 0;
+  color: #ffffff;
+  font-size: clamp(2.25rem, 7vw, 4rem);
+  letter-spacing: -0.06em;
+  line-height: 0.98;
+  text-shadow: 0 2px 20px rgb(0 0 0 / 28%);
+}
+
+.header p {
+  margin: var(--space-2) 0 0;
+  color: rgb(255 255 255 / 76%);
+  font-size: var(--font-size-sm);
+}
+
+.content {
+  display: grid;
+  gap: var(--space-6);
+  padding: clamp(var(--space-5), 5vw, var(--space-7));
+}
+
+.facts {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3);
+  margin: 0;
+}
+
+.facts > div {
+  min-width: 0;
+  padding: var(--space-4);
+  background: var(--color-control);
+  border-radius: var(--radius-lg);
+}
+
+.facts > div:last-child {
+  grid-column: 1 / -1;
+}
+
+.facts dt {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-text-tertiary);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.facts dt svg {
+  color: var(--color-accent);
+}
+
+.facts dd {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  line-height: 1.5;
+}
+
+@keyframes backdropIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes modalIn {
+  from {
+    opacity: 0;
+    transform: translateY(24px) scale(0.97);
+  }
+}
+
+@media (max-width: 600px) {
+  .backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .modal {
+    width: 100%;
+    max-height: 94dvh;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  }
+
+  .header {
+    min-height: 220px;
+  }
+
+  .facts {
+    grid-template-columns: 1fr;
+  }
+
+  .facts > div:last-child {
+    grid-column: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .modal {
+    animation: none;
+  }
+}

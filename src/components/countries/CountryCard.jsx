@@ -7,7 +7,7 @@ function joinValues(values, fallback = 'Não disponível') {
   return values.filter(Boolean).join(', ') || fallback
 }
 
-function CountryCard({ country }) {
+function CountryCard({ country, onSelect }) {
   const [hasFlagError, setHasFlagError] = useState(false)
   const flagUrl = country.flag.svg || country.flag.png
   const currencyLabel = joinValues(
@@ -21,7 +21,13 @@ function CountryCard({ country }) {
 
   return (
     <article className={styles.card}>
-      <div className={styles.flagFrame}>
+      <button
+        aria-label={`Consultar detalhes de ${country.name}`}
+        className={styles.cardButton}
+        onClick={() => onSelect(country)}
+        type="button"
+      >
+        <div className={styles.flagFrame}>
         {flagUrl && !hasFlagError ? (
           <img
             alt={country.flag.alt}
@@ -35,9 +41,9 @@ function CountryCard({ country }) {
           </span>
         )}
         <span className={styles.region}>{country.region}</span>
-      </div>
+        </div>
 
-      <div className={styles.content}>
+        <div className={styles.content}>
         <div className={styles.titleGroup}>
           <h3>{country.name}</h3>
           {country.officialName !== country.name && (
@@ -72,10 +78,10 @@ function CountryCard({ country }) {
             <span>{languageLabel}</span>
           </div>
         </div>
-      </div>
+        </div>
+      </button>
     </article>
   )
 }
 
 export default CountryCard
-

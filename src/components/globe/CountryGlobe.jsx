@@ -46,7 +46,6 @@ function CountryGlobe({
   selectedCountry,
 }) {
   const globeRef = useRef(null)
-  window.__inetumGlobeRef = globeRef
   const { elementRef, height, width } = useElementSize()
   const { isDark } = useTheme()
   const [hoveredCountryId, setHoveredCountryId] = useState(null)
