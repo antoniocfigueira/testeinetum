@@ -53,6 +53,7 @@ function normalizeCountry(country) {
     id: country.codes?.alpha_3 ?? country.codes?.alpha_2 ?? country.uuid,
     code: country.codes?.alpha_2 ?? '',
     code3: country.codes?.alpha_3 ?? '',
+    numericCode: country.codes?.ccn3 ?? '',
     name: country.names?.common ?? 'País sem nome',
     officialName: country.names?.official ?? country.names?.common ?? '',
     alternativeNames: [
@@ -213,4 +214,3 @@ function getAllCountries({ forceRefresh = false } = {}) {
 }
 
 export { CountriesAPIError, getAllCountries }
-

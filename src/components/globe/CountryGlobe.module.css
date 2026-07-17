@@ -1,0 +1,216 @@
+.panel {
+  position: relative;
+  min-width: 0;
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 48%, var(--color-accent-soft), transparent 44%),
+    var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-floating);
+  isolation: isolate;
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+}
+
+.panel::before {
+  position: absolute;
+  z-index: -1;
+  width: 420px;
+  height: 420px;
+  background: var(--color-gradient-blue);
+  border-radius: 50%;
+  content: '';
+  filter: blur(110px);
+  opacity: 0.3;
+  pointer-events: none;
+  transform: translate(-35%, -45%);
+}
+
+.viewport {
+  width: 100%;
+  height: clamp(480px, 62vw, 720px);
+  cursor: grab;
+}
+
+.viewport:active {
+  cursor: grabbing;
+}
+
+.viewport canvas {
+  outline: none;
+}
+
+.instructions,
+.mapStatus,
+.selection {
+  position: absolute;
+  z-index: 2;
+  background: var(--color-surface-glass);
+  border: 1px solid var(--color-border-highlight);
+  box-shadow: var(--shadow-control-hover);
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+}
+
+.instructions {
+  top: var(--space-5);
+  left: var(--space-5);
+  display: grid;
+  gap: 3px;
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.instructions span,
+.selection small {
+  color: var(--color-accent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.instructions strong {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+}
+
+.mapStatus {
+  right: var(--space-5);
+  bottom: var(--space-5);
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  color: var(--color-text-tertiary);
+  font-size: 0.6875rem;
+  border-radius: var(--radius-pill);
+  pointer-events: none;
+}
+
+.mapStatus span + span::before {
+  margin-right: var(--space-3);
+  content: '·';
+}
+
+.selection {
+  bottom: var(--space-5);
+  left: var(--space-5);
+  display: flex;
+  min-width: 190px;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  border-radius: var(--radius-lg);
+  pointer-events: none;
+}
+
+.selection img,
+.selection > span {
+  display: grid;
+  width: 42px;
+  height: 32px;
+  flex: 0 0 42px;
+  object-fit: cover;
+  background: var(--color-control);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-control);
+  place-items: center;
+}
+
+.selection div {
+  display: grid;
+  gap: 2px;
+}
+
+.selection strong {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.tooltip {
+  display: flex;
+  min-width: 176px;
+  align-items: center;
+  gap: 11px;
+  padding: 11px 13px;
+  color: var(--color-text-primary);
+  background: var(--color-background-elevated);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: 14px;
+  box-shadow: var(--shadow-floating);
+}
+
+.tooltip img,
+.tooltip > span {
+  display: grid;
+  width: 42px;
+  height: 30px;
+  flex: 0 0 42px;
+  object-fit: cover;
+  background: var(--color-control);
+  border-radius: 7px;
+  place-items: center;
+}
+
+.tooltip div {
+  display: grid;
+  gap: 2px;
+}
+
+.tooltip strong,
+.tooltip small {
+  display: block;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.tooltip strong {
+  color: var(--color-text-primary);
+  font-size: 0.875rem;
+}
+
+.tooltip small {
+  color: var(--color-text-secondary);
+  font-size: 0.75rem;
+}
+
+@media (max-width: 700px) {
+  .panel {
+    border-radius: var(--radius-xl);
+  }
+
+  .viewport {
+    height: min(125vw, 580px);
+    min-height: 430px;
+  }
+
+  .instructions {
+    top: var(--space-3);
+    left: var(--space-3);
+  }
+
+  .instructions strong {
+    display: none;
+  }
+
+  .selection {
+    right: var(--space-3);
+    bottom: var(--space-3);
+    left: var(--space-3);
+  }
+
+  .mapStatus {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .panel::before {
+    display: none;
+  }
+}

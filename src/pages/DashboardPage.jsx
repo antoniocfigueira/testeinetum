@@ -7,7 +7,7 @@ import {
   SearchX,
   Users,
 } from 'lucide-react'
-import { createElement, useMemo, useState } from 'react'
+import { createElement, lazy, Suspense, useMemo, useState } from 'react'
 import CountryGrid from '../components/countries/CountryGrid.jsx'
 import CountryGridSkeleton from '../components/countries/CountryGridSkeleton.jsx'
 import CountrySearch from '../components/countries/CountrySearch.jsx'
@@ -16,6 +16,10 @@ import useDebouncedValue from '../hooks/useDebouncedValue.js'
 import { countryMatchesSearch } from '../utils/countrySearch.js'
 import { formatCompactNumber, formatInteger } from '../utils/formatters.js'
 import styles from './DashboardPage.module.css'
+
+const CountryGlobe = lazy(
+  () => import('../components/globe/CountryGlobe.jsx'),
+)
 
 function getDashboardStats(countries) {
   const regions = new Set(countries.map((country) => country.region))
@@ -56,6 +60,7 @@ function getDashboardStats(countries) {
 function DashboardPage() {
   const { countries, error, isLoading, retry } = useCountries()
   const [searchQuery, setSearchQuery] = useState('')
+  const [selectedCountry, setSelectedCountry] = useState(null)
   const debouncedQuery = useDebouncedValue(searchQuery, 300)
   const isSearchPending = searchQuery !== debouncedQuery
   const stats = useMemo(() => getDashboardStats(countries), [countries])
@@ -66,6 +71,11 @@ function DashboardPage() {
       ),
     [countries, debouncedQuery],
   )
+  const matchingCountryIds = useMemo(
+    () => new Set(filteredCountries.map((country) => country.id)),
+    [filteredCountries],
+  )
+  const focusedCountry = debouncedQuery ? filteredCountries[0] : null
 
   return (
     <section className={styles.dashboard}>
@@ -95,6 +105,35 @@ function DashboardPage() {
 
       {!isLoading && !error && (
         <>
+          <div className={styles.explorer} aria-busy={isSearchPending}>
+            <CountrySearch
+              isPending={isSearchPending}
+              onChange={setSearchQuery}
+              onClear={() => setSearchQuery('')}
+              resultCount={filteredCountries.length}
+              value={searchQuery}
+            />
+
+            <Suspense
+              fallback={
+                <div className={styles.globeLoading} role="status">
+                  <span aria-hidden="true">
+                    <Globe2 size={30} strokeWidth={1.7} />
+                  </span>
+                  <strong>A preparar o globo…</strong>
+                </div>
+              }
+            >
+              <CountryGlobe
+                countries={countries}
+                focusedCountry={focusedCountry}
+                matchingCountryIds={matchingCountryIds}
+                onSelectCountry={setSelectedCountry}
+                selectedCountry={selectedCountry}
+              />
+            </Suspense>
+          </div>
+
           <div className={styles.stats} aria-label="Resumo dos destinos disponíveis">
             {stats.map(({ icon, label, value }) => (
               <article className={styles.statCard} key={label}>
@@ -107,15 +146,7 @@ function DashboardPage() {
             ))}
           </div>
 
-          <div className={styles.explorer} aria-busy={isSearchPending}>
-            <CountrySearch
-              isPending={isSearchPending}
-              onChange={setSearchQuery}
-              onClear={() => setSearchQuery('')}
-              resultCount={filteredCountries.length}
-              value={searchQuery}
-            />
-
+          <div className={styles.destinations}>
             {filteredCountries.length ? (
               <CountryGrid countries={filteredCountries} />
             ) : (
