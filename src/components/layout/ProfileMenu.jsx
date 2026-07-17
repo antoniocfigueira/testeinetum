@@ -14,9 +14,14 @@ function getInitials(name) {
 
 function ProfileMenu({ onLogout, user }) {
   const [isOpen, setIsOpen] = useState(false)
+  const [imageFailed, setImageFailed] = useState(false)
   const menuRef = useRef(null)
   const displayName = user?.name ?? 'Utilizador Inetum'
   const displayEmail = user?.email ?? 'utilizador@inetum.com'
+
+  useEffect(() => {
+    setImageFailed(false)
+  }, [user?.picture])
 
   useEffect(() => {
     if (!isOpen) return undefined
@@ -57,8 +62,12 @@ function ProfileMenu({ onLogout, user }) {
         type="button"
       >
         <span className={styles.avatar} aria-hidden="true">
-          {user?.picture ? (
-            <img alt="" src={user.picture} />
+          {user?.picture && !imageFailed ? (
+            <img
+              alt=""
+              onError={() => setImageFailed(true)}
+              src={user.picture}
+            />
           ) : (
             getInitials(displayName)
           )}

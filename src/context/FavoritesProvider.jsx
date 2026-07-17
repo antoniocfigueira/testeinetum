@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import useAuth from '../hooks/useAuth.js'
+import useToast from '../hooks/useToast.js'
 import FavoritesContext from './favoritesContext.js'
 
 const STORAGE_KEY = 'inetum-travel-favorites'
@@ -35,6 +36,7 @@ function readFavoritesStore() {
 
 function FavoritesProvider({ children }) {
   const { user } = useAuth()
+  const { addToast } = useToast()
   const [favoritesByUser, setFavoritesByUser] = useState(readFavoritesStore)
   const [persistenceError, setPersistenceError] = useState(null)
   const userId = user?.id ?? null
@@ -118,21 +120,23 @@ function FavoritesProvider({ children }) {
     (country) => {
       if (!userId || !country?.id) return
 
-      setFavoritesByUser((currentStore) => {
-        const currentFavorites = currentStore[userId] ?? []
-        const isStored = currentFavorites.some(
-          (favorite) => favorite.id === country.id,
-        )
+      const isStored = favoriteIds.has(country.id)
 
-        return {
-          ...currentStore,
-          [userId]: isStored
-            ? currentFavorites.filter((favorite) => favorite.id !== country.id)
-            : [...currentFavorites, country],
-        }
-      })
+      if (isStored) {
+        removeFavorite(country.id)
+      } else {
+        addFavorite(country)
+      }
+
+      addToast(
+        `${country.name} ${isStored ? 'foi removido dos' : 'foi adicionado aos'} favoritos.`,
+        {
+          title: isStored ? 'Favorito removido' : 'Destino guardado',
+          type: 'success',
+        },
+      )
     },
-    [userId],
+    [addFavorite, addToast, favoriteIds, removeFavorite, userId],
   )
 
   const isFavorite = useCallback(

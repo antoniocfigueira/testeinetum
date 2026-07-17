@@ -69,7 +69,7 @@ function normalizeWeatherError(error) {
 
   if (error.response.status === 404) {
     return new WeatherAPIError(
-      'Não foram encontrados dados meteorológicos para esta capital.',
+      'Não foram encontrados dados meteorológicos para esta localização.',
       'NOT_FOUND',
     )
   }
@@ -144,4 +144,52 @@ async function getCurrentWeather(
   }
 }
 
-export { getCurrentWeather, WeatherAPIError }
+async function getWeatherByCoordinates(
+  coordinates,
+  { forceRefresh = false, signal } = {},
+) {
+  const latitude = Number(coordinates?.latitude)
+  const longitude = Number(coordinates?.longitude)
+
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude)) {
+    throw new WeatherAPIError(
+      'As coordenadas recebidas não são válidas.',
+      'INVALID_COORDINATES',
+    )
+  }
+
+  if (!API_KEY) {
+    throw new WeatherAPIError(
+      'Define VITE_OPENWEATHER_API_KEY para consultar a meteorologia.',
+      'CONFIGURATION',
+    )
+  }
+
+  const cacheKey = `local:${latitude.toFixed(3)}:${longitude.toFixed(3)}`
+
+  if (!forceRefresh && weatherCache.has(cacheKey)) {
+    return weatherCache.get(cacheKey)
+  }
+
+  try {
+    const response = await weatherClient.get('/weather', {
+      params: {
+        appid: API_KEY,
+        lang: 'pt',
+        lat: latitude,
+        lon: longitude,
+        units: 'metric',
+      },
+      signal,
+    })
+    const weather = normalizeWeather(response.data)
+
+    weatherCache.set(cacheKey, weather)
+    return weather
+  } catch (error) {
+    if (axios.isCancel(error)) throw error
+    throw normalizeWeatherError(error)
+  }
+}
+
+export { getCurrentWeather, getWeatherByCoordinates, WeatherAPIError }
