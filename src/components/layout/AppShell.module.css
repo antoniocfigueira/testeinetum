@@ -1,0 +1,121 @@
+.shell {
+  position: relative;
+  display: grid;
+  min-height: 100dvh;
+  grid-template-columns: 264px minmax(0, 1fr);
+  overflow: hidden;
+  isolation: isolate;
+}
+
+.shell::before,
+.shell::after {
+  position: fixed;
+  z-index: -2;
+  width: min(48vw, 680px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  content: '';
+  filter: blur(12px);
+  opacity: var(--gradient-opacity);
+  pointer-events: none;
+}
+
+.shell::before {
+  top: -28%;
+  right: -12%;
+  background: radial-gradient(circle, var(--color-gradient-blue), transparent 68%);
+  animation: shell-gradient 16s ease-in-out infinite alternate;
+}
+
+.shell::after {
+  bottom: -36%;
+  left: 8%;
+  background: radial-gradient(circle, var(--color-gradient-purple), transparent 68%);
+  animation: shell-gradient 20s ease-in-out -8s infinite alternate-reverse;
+}
+
+.workspace {
+  display: flex;
+  min-width: 0;
+  min-height: 100dvh;
+  flex-direction: column;
+  grid-column: 2;
+}
+
+.main {
+  width: 100%;
+  max-width: 1600px;
+  flex: 1;
+  align-self: center;
+  padding: var(--space-7) clamp(var(--space-5), 4vw, var(--space-10));
+}
+
+.main:focus {
+  outline: none;
+}
+
+.backdrop {
+  position: fixed;
+  z-index: 30;
+  inset: 0;
+  display: none;
+  background: rgb(0 0 0 / 38%);
+  backdrop-filter: blur(3px);
+}
+
+.skipLink {
+  position: fixed;
+  z-index: 100;
+  top: var(--space-3);
+  left: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: #ffffff;
+  background: var(--color-accent);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-floating);
+  transform: translateY(-160%);
+  transition: transform var(--transition-fast);
+}
+
+.skipLink:focus {
+  transform: translateY(0);
+}
+
+@keyframes shell-gradient {
+  from {
+    transform: translate3d(-2%, -3%, 0) scale(0.94);
+  }
+
+  to {
+    transform: translate3d(5%, 6%, 0) scale(1.08);
+  }
+}
+
+@media (max-width: 900px) {
+  .shell {
+    display: block;
+    overflow: visible;
+  }
+
+  .workspace {
+    min-height: 100dvh;
+  }
+
+  .backdrop {
+    display: block;
+  }
+}
+
+@media (max-width: 600px) {
+  .main {
+    padding: var(--space-5) var(--space-4);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shell::before,
+  .shell::after {
+    animation: none;
+  }
+}
+
