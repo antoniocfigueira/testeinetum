@@ -80,6 +80,7 @@ function CountryGlobe({
   selectedCountry,
 }) {
   const globeRef = useRef(null)
+  const aimCardRef = useRef(null)
   const aimTimerRef = useRef(null)
   const idleTimerRef = useRef(null)
   const lastPointerWakeRef = useRef(0)
@@ -423,6 +424,22 @@ function CountryGlobe({
     },
     [elementRef, focusCountry, height, onSelectCountry, width],
   )
+  const handleAimCardSelect = useCallback(() => {
+    if (!aimedCountry) return
+
+    const bounds = aimCardRef.current?.getBoundingClientRect()
+    const origin = bounds
+      ? {
+          height: bounds.height,
+          width: bounds.width,
+          x: bounds.left + bounds.width / 2,
+          y: bounds.top + bounds.height / 2,
+        }
+      : null
+
+    focusCountry(aimedCountry, 700)
+    onSelectCountry(aimedCountry, origin)
+  }, [aimedCountry, focusCountry, onSelectCountry])
 
   const getCountryColor = useCallback(
     (country) => {
@@ -543,9 +560,15 @@ function CountryGlobe({
         </div>
 
         {aimedCountry && (
-          <div
+          <button
+            aria-label={`Abrir informações sobre ${aimedCountry.name}`}
             className={styles.aimCard}
             key={aimedCountry.id}
+            onClick={handleAimCardSelect}
+            onPointerDown={(event) => event.stopPropagation()}
+            onPointerUp={(event) => event.stopPropagation()}
+            ref={aimCardRef}
+            type="button"
           >
             {aimedCountry.flag.svg || aimedCountry.flag.png ? (
               <img
@@ -559,7 +582,7 @@ function CountryGlobe({
               <small>Na mira</small>
               <strong>{aimedCountry.name}</strong>
             </div>
-          </div>
+          </button>
         )}
       </div>
 

@@ -8,13 +8,13 @@
 
 .trigger {
   display: flex;
-  width: 42px;
-  height: 42px;
+  width: 40px;
+  height: 40px;
   align-items: center;
   justify-content: center;
-  padding: 3px;
+  padding: 0;
   color: var(--color-text-primary);
-  background: var(--color-surface-glass);
+  background: transparent;
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-control);
   cursor: pointer;
@@ -25,8 +25,8 @@
 }
 
 .trigger:hover {
-  background: var(--color-control-hover);
   box-shadow: var(--shadow-control-hover);
+  transform: scale(1.03);
 }
 
 .trigger:active {
@@ -35,9 +35,9 @@
 
 .avatar {
   display: grid;
-  width: 36px;
-  height: 36px;
-  flex: 0 0 36px;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
   overflow: hidden;
   color: var(--color-on-accent);
   font-size: var(--font-size-xs);

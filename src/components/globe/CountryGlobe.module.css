@@ -37,7 +37,18 @@
   cursor: grabbing;
 }
 
+.viewport :global(.scene-container) {
+  position: absolute !important;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
+}
+
 .viewport canvas {
+  position: absolute;
+  inset: 0;
+  width: 100% !important;
+  height: 100% !important;
   outline: none;
 }
 
@@ -292,12 +303,12 @@
     top: 50%;
     left: 50%;
     display: grid;
-    width: 34px;
-    height: 34px;
+    width: 24px;
+    height: 24px;
     border-radius: 50%;
     background: rgb(255 255 255 / 10%);
-    box-shadow: 0 4px 18px rgb(0 0 0 / 26%);
-    backdrop-filter: blur(8px);
+    box-shadow: 0 3px 12px rgb(0 0 0 / 22%);
+    backdrop-filter: blur(5px);
     pointer-events: none;
     transform: translate(-50%, -50%);
     place-items: center;
@@ -312,29 +323,29 @@
   }
 
   .mobileAim::before {
-    width: 46px;
-    height: 1.5px;
+    width: 34px;
+    height: 1px;
   }
 
   .mobileAim::after {
-    width: 1.5px;
-    height: 46px;
+    width: 1px;
+    height: 34px;
   }
 
   .mobileAim span {
     position: relative;
     z-index: 1;
-    width: 6px;
-    height: 6px;
+    width: 4px;
+    height: 4px;
     background: var(--color-accent);
     border-radius: 50%;
-    box-shadow: 0 0 10px var(--color-accent);
+    box-shadow: 0 0 6px var(--color-accent);
   }
 
   .aimCard {
     position: absolute;
     z-index: 4;
-    top: calc(50% + 34px);
+    top: calc(50% + 26px);
     left: 50%;
     display: flex;
     min-width: 168px;
@@ -353,7 +364,8 @@
       inset 0 1px 0 rgb(255 255 255 / 22%),
       inset 0 -1px 0 rgb(0 0 0 / 8%),
       0 18px 42px rgb(0 0 0 / 22%);
-    pointer-events: none;
+    cursor: pointer;
+    pointer-events: auto;
     backdrop-filter: blur(26px) saturate(185%);
     -webkit-backdrop-filter: blur(26px) saturate(185%);
     transform: translateX(-50%);

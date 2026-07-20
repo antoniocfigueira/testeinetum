@@ -28,7 +28,7 @@ function ThemeProvider({ children }) {
     root.style.colorScheme = theme
     themeColor?.setAttribute(
       'content',
-      theme === DARK_THEME ? '#1c1c1e' : '#f2f2f7',
+      theme === DARK_THEME ? '#252527' : '#fbfbfd',
     )
     try {
       localStorage.setItem(STORAGE_KEY, theme)

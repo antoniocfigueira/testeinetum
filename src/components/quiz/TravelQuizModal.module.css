@@ -159,10 +159,11 @@
   transform: translateY(-1px);
 }
 
-.options .selectedOption {
-  color: var(--color-text-primary);
-  background: var(--color-action-soft);
-  box-shadow: var(--shadow-control-hover);
+.options .selectedOption,
+.options .selectedOption:hover {
+  color: var(--color-on-action);
+  background: var(--color-action);
+  box-shadow: 0 8px 22px var(--color-action-soft);
 }
 
 .options i {
@@ -178,7 +179,8 @@
 }
 
 .options .selectedOption i {
-  background: var(--color-action);
+  color: var(--color-on-action);
+  background: rgb(255 255 255 / 18%);
 }
 
 .footer {

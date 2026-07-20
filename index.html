@@ -2,12 +2,17 @@
 <html lang="pt-PT">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+    />
     <meta
       name="description"
       content="Inetum Travel — descubra países, destinos e meteorologia."
     />
-    <meta name="theme-color" content="#f2f2f7" />
+    <meta name="theme-color" content="#fbfbfd" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
     <script>
       ;(() => {
         const storageKey = 'inetum-travel-theme'
@@ -30,7 +35,7 @@
         document.documentElement.style.colorScheme = theme
         document
           .querySelector('meta[name="theme-color"]')
-          .setAttribute('content', theme === 'dark' ? '#1c1c1e' : '#f2f2f7')
+          .setAttribute('content', theme === 'dark' ? '#252527' : '#fbfbfd')
       })()
     </script>
     <title>Inetum Travel</title>

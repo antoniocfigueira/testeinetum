@@ -5,16 +5,17 @@
 }
 
 .compact {
+  display: grid;
   width: 42px;
   height: 42px;
   min-width: 42px;
   min-height: 42px;
-  padding: 1px;
-  overflow: hidden;
+  padding: 0;
+  overflow: visible;
   background: transparent;
   border-radius: 50%;
-  box-shadow: 0 2px 8px rgb(0 0 0 / 14%);
-  clip-path: circle(50%);
+  box-shadow: none;
+  place-items: center;
 }
 
 .compact > div {
@@ -24,6 +25,8 @@
   max-width: 40px;
   overflow: hidden;
   border-radius: 50%;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 14%);
+  clip-path: circle(50%);
   place-items: center;
 }
 
