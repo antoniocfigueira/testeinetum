@@ -94,6 +94,9 @@ function CountryGlobe({
   )
   const [isInViewport, setIsInViewport] = useState(true)
   const shouldAnimate = isActive && isDocumentVisible && isInViewport
+  const mobileGlobeSize = Math.min(width, height)
+  const globeWidth = width < 700 ? mobileGlobeSize : width
+  const globeHeight = width < 700 ? mobileGlobeSize : height
 
   const globeMaterial = useMemo(
     () =>
@@ -220,7 +223,10 @@ function CountryGlobe({
   const updateAimedCountry = useCallback(() => {
     if (width >= 700) return
 
-    const coordinates = globeRef.current?.toGlobeCoords(width / 2, height / 2)
+    const coordinates = globeRef.current?.toGlobeCoords(
+      globeWidth / 2,
+      globeHeight / 2,
+    )
     const aimedPolygon = coordinates
       ? polygonCountries.find((polygon) =>
           geoContains(polygon, [coordinates.lng, coordinates.lat]),
@@ -236,7 +242,7 @@ function CountryGlobe({
         ? currentCountryId
         : nextCountry?.id ?? null,
     )
-  }, [height, polygonCountries, width])
+  }, [globeHeight, globeWidth, polygonCountries, width])
 
   const scheduleAimUpdate = useCallback(() => {
     if (width >= 700 || aimTimerRef.current) return
@@ -408,8 +414,8 @@ function CountryGlobe({
         }
       } else if (canvas && screenPosition) {
         const bounds = canvas.getBoundingClientRect()
-        const scaleX = bounds.width / width
-        const scaleY = bounds.height / height
+        const scaleX = bounds.width / globeWidth
+        const scaleY = bounds.height / globeHeight
 
         origin = {
           height: 26,
@@ -422,7 +428,7 @@ function CountryGlobe({
       focusCountry(country, 700)
       onSelectCountry(country, origin)
     },
-    [elementRef, focusCountry, height, onSelectCountry, width],
+    [elementRef, focusCountry, globeHeight, globeWidth, onSelectCountry],
   )
   const handleAimCardSelect = useCallback(() => {
     if (!aimedCountry) return
@@ -519,13 +525,13 @@ function CountryGlobe({
         onWheel={() => wakeGlobe(1800)}
         ref={elementRef}
       >
-        {width > 0 && height > 0 && (
+        {globeWidth > 0 && globeHeight > 0 && (
           <Globe
             animateIn={false}
             backgroundColor="rgba(0,0,0,0)"
             globeCurvatureResolution={10}
             globeMaterial={globeMaterial}
-            height={height}
+            height={globeHeight}
             onGlobeReady={handleGlobeReady}
             onZoom={handleZoom}
             onPolygonClick={handlePolygonClick}
@@ -542,7 +548,7 @@ function CountryGlobe({
             rendererConfig={RENDERER_CONFIG}
             showAtmosphere={false}
             waitForGlobeReady={false}
-            width={width}
+            width={globeWidth}
           />
         )}
 

@@ -37,18 +37,7 @@
   cursor: grabbing;
 }
 
-.viewport :global(.scene-container) {
-  position: absolute !important;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
-}
-
 .viewport canvas {
-  position: absolute;
-  inset: 0;
-  width: 100% !important;
-  height: 100% !important;
   outline: none;
 }
 
@@ -271,7 +260,17 @@
   .viewport {
     height: min(125vw, 580px);
     min-height: 430px;
+    touch-action: pan-y;
+  }
+
+  .viewport :global(.scene-container) {
+    position: absolute !important;
+    top: 50%;
+    left: 50%;
+    overflow: hidden;
+    border-radius: 50%;
     touch-action: none;
+    transform: translate(-50%, -50%);
   }
 
   .viewport canvas {
