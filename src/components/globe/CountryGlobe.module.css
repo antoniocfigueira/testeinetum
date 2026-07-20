@@ -37,6 +37,18 @@
   cursor: grabbing;
 }
 
+.globeStage {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  pointer-events: none;
+  place-items: center;
+}
+
+.globeStage :global(.scene-container) {
+  pointer-events: auto;
+}
+
 .viewport canvas {
   outline: none;
 }
@@ -264,13 +276,9 @@
   }
 
   .viewport :global(.scene-container) {
-    position: absolute !important;
-    top: 50%;
-    left: 50%;
     overflow: hidden;
     border-radius: 50%;
     touch-action: none;
-    transform: translate(-50%, -50%);
   }
 
   .viewport canvas {

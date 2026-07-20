@@ -526,30 +526,32 @@ function CountryGlobe({
         ref={elementRef}
       >
         {globeWidth > 0 && globeHeight > 0 && (
-          <Globe
-            animateIn={false}
-            backgroundColor="rgba(0,0,0,0)"
-            globeCurvatureResolution={10}
-            globeMaterial={globeMaterial}
-            height={globeHeight}
-            onGlobeReady={handleGlobeReady}
-            onZoom={handleZoom}
-            onPolygonClick={handlePolygonClick}
-            onPolygonHover={handlePolygonHover}
-            polygonAltitude={getPolygonAltitude}
-            polygonCapCurvatureResolution={5}
-            polygonCapColor={getPolygonCapColor}
-            polygonCapMaterial={getPolygonCapMaterial}
-            polygonLabel={getPolygonLabel}
-            polygonsData={polygonCountries}
-            polygonSideColor={getPolygonSideColor}
-            polygonsTransitionDuration={0}
-            ref={globeRef}
-            rendererConfig={RENDERER_CONFIG}
-            showAtmosphere={false}
-            waitForGlobeReady={false}
-            width={globeWidth}
-          />
+          <div className={styles.globeStage}>
+            <Globe
+              animateIn={false}
+              backgroundColor="rgba(0,0,0,0)"
+              globeCurvatureResolution={10}
+              globeMaterial={globeMaterial}
+              height={globeHeight}
+              onGlobeReady={handleGlobeReady}
+              onZoom={handleZoom}
+              onPolygonClick={handlePolygonClick}
+              onPolygonHover={handlePolygonHover}
+              polygonAltitude={getPolygonAltitude}
+              polygonCapCurvatureResolution={5}
+              polygonCapColor={getPolygonCapColor}
+              polygonCapMaterial={getPolygonCapMaterial}
+              polygonLabel={getPolygonLabel}
+              polygonsData={polygonCountries}
+              polygonSideColor={getPolygonSideColor}
+              polygonsTransitionDuration={0}
+              ref={globeRef}
+              rendererConfig={RENDERER_CONFIG}
+              showAtmosphere={false}
+              waitForGlobeReady={false}
+              width={globeWidth}
+            />
+          </div>
         )}
 
         {isEdgeBlurActive && (
