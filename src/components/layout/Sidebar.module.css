@@ -8,6 +8,9 @@
 }
 
 .sidebar {
+  --sidebar-collapsed-width: 70px;
+  --sidebar-radius: calc(var(--sidebar-collapsed-width) / 2);
+
   position: fixed;
   z-index: 40;
   top: 50%;
@@ -19,12 +22,11 @@
   padding: var(--space-3);
   overflow: hidden;
   background: var(--color-surface-glass);
-  border: 1px solid var(--color-border-highlight);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-floating);
+  border-radius: var(--sidebar-radius);
+  box-shadow: 14px 18px 36px -22px rgb(0 0 0 / 42%);
   backdrop-filter: blur(var(--blur-glass)) saturate(170%);
   -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(170%);
-  clip-path: inset(0 162px 0 0 round 18px);
+  clip-path: inset(0 162px 0 0 round var(--sidebar-radius));
   transform: translate3d(0, -50%, 0);
   transform-origin: left center;
   backface-visibility: hidden;
@@ -37,7 +39,7 @@
 .edgeTrigger:hover + .sidebar,
 .sidebar:hover,
 .sidebar:has(:focus-visible) {
-  clip-path: inset(0 0 0 0 round var(--radius-xl));
+  clip-path: inset(0 0 0 0 round var(--sidebar-radius));
   transform: translate3d(3px, -50%, 0) scale(1.045);
 }
 
@@ -64,8 +66,7 @@
   overflow: hidden;
   color: #ffffff;
   background: linear-gradient(145deg, #64d2ff 0%, #0a84ff 48%, #0057d9 100%);
-  border: 1px solid rgb(255 255 255 / 28%);
-  border-radius: 14px;
+  border-radius: 50%;
   box-shadow:
     inset 0 1px 1px rgb(255 255 255 / 35%),
     inset 0 -8px 16px rgb(0 45 120 / 16%),
@@ -175,7 +176,7 @@
   color: var(--color-text-secondary);
   text-align: left;
   background: transparent;
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
     color var(--transition-fast),

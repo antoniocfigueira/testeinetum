@@ -20,7 +20,6 @@
     var(--color-background-elevated) 92%,
     transparent
   );
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-2xl);
   box-shadow: 0 34px 110px rgb(0 0 0 / 38%);
   backdrop-filter: blur(32px) saturate(165%);
@@ -42,7 +41,7 @@
   height: 44px;
   color: var(--color-accent);
   background: var(--color-accent-soft);
-  border-radius: 14px;
+  border-radius: 50%;
   place-items: center;
 }
 
@@ -145,13 +144,11 @@
   color: var(--color-text-secondary);
   text-align: left;
   background: color-mix(in srgb, var(--color-control) 72%, transparent);
-  border: 1px solid var(--color-border-highlight);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
     color var(--transition-fast),
     background-color var(--transition-fast),
-    border-color var(--transition-fast),
     box-shadow var(--transition-fast),
     transform var(--transition-fast);
 }
@@ -165,7 +162,6 @@
 .options .selectedOption {
   color: var(--color-text-primary);
   background: var(--color-accent-soft);
-  border-color: color-mix(in srgb, var(--color-accent) 36%, transparent);
   box-shadow: 0 8px 22px rgb(0 122 255 / 10%);
 }
 
@@ -176,15 +172,13 @@
   flex: 0 0 24px;
   color: #ffffff;
   font-style: normal;
-  background: transparent;
-  border: 1px solid var(--color-border);
+  background: var(--color-control-active);
   border-radius: 50%;
   place-items: center;
 }
 
 .options .selectedOption i {
   background: var(--color-accent);
-  border-color: var(--color-accent);
 }
 
 .footer {
@@ -193,7 +187,6 @@
   justify-content: space-between;
   gap: var(--space-3);
   padding: var(--space-4) var(--space-5) var(--space-5);
-  border-top: 1px solid var(--color-border);
 }
 
 .footer button {

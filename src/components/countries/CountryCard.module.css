@@ -3,13 +3,11 @@
   min-width: 0;
   overflow: hidden;
   background: color-mix(in srgb, var(--color-surface) 84%, transparent);
-  border: 1px solid var(--color-border-highlight);
   border-radius: 26px;
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(var(--blur-glass)) saturate(150%);
   -webkit-backdrop-filter: blur(var(--blur-glass)) saturate(150%);
   transition:
-    border-color var(--transition-base),
     box-shadow var(--transition-slow),
     transform var(--transition-slow);
 }
@@ -24,7 +22,6 @@
   height: 40px;
   color: #ffffff;
   background: rgb(28 28 30 / 48%);
-  border: 1px solid rgb(255 255 255 / 22%);
   border-radius: 50%;
   box-shadow: 0 5px 18px rgb(0 0 0 / 16%);
   cursor: pointer;
@@ -56,16 +53,12 @@
 }
 
 .card:hover {
-  border-color: color-mix(in srgb, var(--color-accent) 22%, var(--color-border));
   box-shadow: var(--shadow-floating);
   transform: translateY(-5px) scale(1.008);
 }
 
 .card:focus-within {
-  border-color: var(--color-accent);
-  box-shadow:
-    0 0 0 4px var(--color-accent-soft),
-    var(--shadow-floating);
+  box-shadow: var(--shadow-floating);
 }
 
 .cardButton {
@@ -123,7 +116,6 @@
   font-size: var(--font-size-xs);
   font-weight: 650;
   background: rgb(28 28 30 / 48%);
-  border: 1px solid rgb(255 255 255 / 18%);
   border-radius: var(--radius-pill);
   backdrop-filter: blur(16px) saturate(150%);
   -webkit-backdrop-filter: blur(16px) saturate(150%);
@@ -137,7 +129,6 @@
   margin-top: calc(-40px - var(--space-7));
   padding: var(--space-5);
   background: color-mix(in srgb, var(--color-surface) 74%, transparent);
-  border-top: 1px solid var(--color-border-highlight);
   border-radius: 26px 26px 0 0;
   box-shadow: 0 -12px 34px rgb(0 0 0 / 8%);
   backdrop-filter: blur(24px) saturate(175%);
@@ -183,7 +174,6 @@
   min-width: 0;
   padding: var(--space-3);
   background: color-mix(in srgb, var(--color-control) 82%, transparent);
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-md);
 }
 

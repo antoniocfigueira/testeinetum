@@ -5,6 +5,17 @@
   justify-content: center;
 }
 
+.compact {
+  width: 44px;
+  min-width: 44px;
+  overflow: hidden;
+  border-radius: 50%;
+}
+
+.compact > div {
+  max-width: 44px;
+}
+
 .configurationError {
   display: inline-flex;
   min-height: 40px;

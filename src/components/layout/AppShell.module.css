@@ -72,7 +72,7 @@
   padding: var(--space-3) var(--space-4);
   color: #ffffff;
   background: var(--color-accent);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   box-shadow: var(--shadow-floating);
   transform: translateY(-160%);
   transition: transform var(--transition-fast);

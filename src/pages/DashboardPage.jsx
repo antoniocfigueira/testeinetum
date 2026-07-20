@@ -24,9 +24,11 @@ import CountryGrid from '../components/countries/CountryGrid.jsx'
 import CountryGridSkeleton from '../components/countries/CountryGridSkeleton.jsx'
 import CountrySearch from '../components/countries/CountrySearch.jsx'
 import CountryDetailsModal from '../components/countries/CountryDetailsModal.jsx'
+import MobileCountryDeck from '../components/countries/MobileCountryDeck.jsx'
 import TravelQuizModal from '../components/quiz/TravelQuizModal.jsx'
 import useCountries from '../hooks/useCountries.js'
 import useDebouncedValue from '../hooks/useDebouncedValue.js'
+import useMediaQuery from '../hooks/useMediaQuery.js'
 import { countryMatchesSearch } from '../utils/countrySearch.js'
 import { loadCountryGlobe } from '../utils/countryGlobeLoader.js'
 import { getQuizRecommendations } from '../utils/travelQuiz.js'
@@ -93,6 +95,7 @@ function getDashboardStats(countries) {
 
 function DashboardPage({ isActive = true }) {
   const { countries, error, isLoading, retry } = useCountries()
+  const isMobile = useMediaQuery('(max-width: 600px)')
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedCountry, setSelectedCountry] = useState(null)
   const [modalOrigin, setModalOrigin] = useState(null)
@@ -325,12 +328,20 @@ function DashboardPage({ isActive = true }) {
                     </button>
                   )}
                 </header>
-                <div className={styles.suggestedGrid} key={suggestionSeed}>
-                  <CountryGrid
-                    countries={suggestedCountries}
+                {isMobile ? (
+                  <MobileCountryDeck
+                    countries={listCountryPool}
+                    key={suggestionSeed}
                     onSelectCountry={selectCountry}
                   />
-                </div>
+                ) : (
+                  <div className={styles.suggestedGrid} key={suggestionSeed}>
+                    <CountryGrid
+                      countries={suggestedCountries}
+                      onSelectCountry={selectCountry}
+                    />
+                  </div>
+                )}
               </section>
             ) : null}
           </div>

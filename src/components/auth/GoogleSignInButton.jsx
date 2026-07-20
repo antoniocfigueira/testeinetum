@@ -5,7 +5,7 @@ import useTheme from '../../hooks/useTheme.js'
 import useToast from '../../hooks/useToast.js'
 import styles from './GoogleSignInButton.module.css'
 
-function GoogleSignInButton({ onSuccess }) {
+function GoogleSignInButton({ compact = false, onSuccess }) {
   const {
     isGoogleConfigured,
     login,
@@ -16,6 +16,7 @@ function GoogleSignInButton({ onSuccess }) {
   const [isCompact, setIsCompact] = useState(() =>
     window.matchMedia('(max-width: 600px)').matches,
   )
+  const showIconOnly = compact || isCompact
 
   useEffect(() => {
     const mediaQuery = window.matchMedia('(max-width: 600px)')
@@ -58,19 +59,19 @@ function GoogleSignInButton({ onSuccess }) {
   }
 
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ${showIconOnly ? styles.compact : ''}`}>
       <GoogleLogin
-        key={`${isDark ? 'dark' : 'light'}-${isCompact ? 'compact' : 'full'}`}
+        key={`${isDark ? 'dark' : 'light'}-${showIconOnly ? 'compact' : 'full'}`}
         locale="pt-PT"
         logo_alignment="left"
         onError={handleError}
         onSuccess={handleSuccess}
-        shape="pill"
+        shape={showIconOnly ? 'circle' : 'pill'}
         size="large"
         text="signin_with"
         theme={isDark ? 'filled_black' : 'outline'}
-        type={isCompact ? 'icon' : 'standard'}
-        width={isCompact ? undefined : '210'}
+        type={showIconOnly ? 'icon' : 'standard'}
+        width={showIconOnly ? undefined : '210'}
       />
     </div>
   )

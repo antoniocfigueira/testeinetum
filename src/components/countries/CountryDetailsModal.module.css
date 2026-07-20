@@ -27,7 +27,6 @@
     var(--color-background-elevated) 92%,
     transparent
   );
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-2xl);
   box-shadow: 0 32px 100px rgb(0 0 0 / 35%);
   backdrop-filter: blur(32px) saturate(165%);
@@ -92,8 +91,7 @@
     var(--color-background-elevated) 78%,
     transparent
   );
-  border: 1px solid var(--color-border-highlight);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-floating);
   pointer-events: none;
   backdrop-filter: blur(20px) saturate(160%);
@@ -115,7 +113,7 @@
   flex: 0 0 42px;
   object-fit: cover;
   background: var(--color-control);
-  border-radius: 7px;
+  border-radius: var(--radius-sm);
   place-items: center;
 }
 
@@ -152,7 +150,6 @@
   height: 42px;
   color: #ffffff;
   background: rgb(28 28 30 / 38%);
-  border: 1px solid rgb(255 255 255 / 22%);
   border-radius: 50%;
   box-shadow: var(--shadow-control-hover);
   cursor: pointer;
@@ -226,7 +223,6 @@
   max-width: min(680px, calc(100% - 80px));
   padding: var(--space-4) var(--space-5);
   background: rgb(28 28 30 / 32%);
-  border: 1px solid rgb(255 255 255 / 18%);
   border-radius: var(--radius-xl);
   box-shadow: 0 14px 40px rgb(0 0 0 / 18%);
   backdrop-filter: blur(20px) saturate(150%);
@@ -240,7 +236,6 @@
   font-size: var(--font-size-xs);
   font-weight: 650;
   background: rgb(255 255 255 / 12%);
-  border: 1px solid rgb(255 255 255 / 20%);
   border-radius: var(--radius-pill);
   backdrop-filter: blur(12px);
 }
@@ -283,8 +278,7 @@
   display: grid;
   padding: 4px;
   background: color-mix(in srgb, var(--color-control) 86%, transparent);
-  border: 1px solid var(--color-border-highlight);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-pill);
   box-shadow: var(--shadow-control);
   backdrop-filter: blur(20px) saturate(160%);
   -webkit-backdrop-filter: blur(20px) saturate(160%);
@@ -299,7 +293,7 @@
   left: 4px;
   width: calc((100% - 8px) / 3);
   background: var(--color-background-elevated);
-  border-radius: calc(var(--radius-lg) - 4px);
+  border-radius: var(--radius-pill);
   box-shadow: var(--shadow-control-hover);
   content: '';
   pointer-events: none;
@@ -326,7 +320,7 @@
   padding: 10px var(--space-3);
   color: var(--color-text-secondary);
   background: transparent;
-  border-radius: calc(var(--radius-lg) - 4px);
+  border-radius: var(--radius-pill);
   cursor: pointer;
   font-size: var(--font-size-sm);
   font-weight: 650;
@@ -390,7 +384,6 @@
   min-width: 0;
   padding: var(--space-4);
   background: color-mix(in srgb, var(--color-control) 72%, transparent);
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-lg);
 }
 
@@ -461,15 +454,14 @@
   font-size: var(--font-size-sm);
   font-weight: 600;
   background: color-mix(in srgb, var(--color-control) 78%, transparent);
-  border: 1px solid var(--color-border-highlight);
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-pill);
   outline: none;
   cursor: pointer;
 }
 
 .originSelector select:focus-visible {
-  border-color: var(--color-accent);
-  box-shadow: 0 0 0 4px var(--color-accent-soft);
+  background: var(--color-control-hover);
+  box-shadow: var(--shadow-control-hover);
 }
 
 .routeOverview {
@@ -479,7 +471,6 @@
   gap: var(--space-4);
   padding: var(--space-5);
   background: color-mix(in srgb, var(--color-control) 66%, transparent);
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-xl);
   grid-template-columns: minmax(0, 1fr) minmax(100px, 0.8fr) minmax(0, 1fr);
 }
@@ -536,7 +527,6 @@
   gap: var(--space-4);
   padding: var(--space-4) var(--space-5);
   background: var(--color-accent-soft);
-  border: 1px solid color-mix(in srgb, var(--color-accent) 18%, transparent);
   border-radius: var(--radius-xl);
 }
 
@@ -579,7 +569,6 @@
   gap: var(--space-2);
   padding: var(--space-4);
   background: color-mix(in srgb, var(--color-control) 66%, transparent);
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-lg);
 }
 
@@ -619,18 +608,15 @@
   padding: var(--space-4);
   color: inherit;
   background: color-mix(in srgb, var(--color-surface) 78%, transparent);
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-xl);
   box-shadow: var(--shadow-control);
   grid-template-columns: auto minmax(0, 1fr) auto;
   transition:
-    border-color var(--transition-fast),
     box-shadow var(--transition-base),
     transform var(--transition-base);
 }
 
 .discoveryGrid a:hover {
-  border-color: color-mix(in srgb, var(--color-accent) 28%, var(--color-border));
   box-shadow: var(--shadow-control-hover);
   transform: translateY(-2px);
 }

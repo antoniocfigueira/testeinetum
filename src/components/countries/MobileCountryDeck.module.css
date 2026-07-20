@@ -1,0 +1,145 @@
+.deckSection {
+  display: grid;
+  gap: var(--space-4);
+  padding-inline: var(--space-4);
+  margin-inline: calc(var(--space-4) * -1);
+  overflow: clip;
+}
+
+.deckHint {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2);
+  color: var(--color-text-tertiary);
+  font-size: 0.6875rem;
+}
+
+.deckHint span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.deckHint strong {
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+}
+
+.deckViewport {
+  position: relative;
+  width: min(100%, 390px);
+  height: 370px;
+  justify-self: center;
+  perspective: 1100px;
+}
+
+.cardLayer {
+  position: absolute;
+  inset: 0 7px auto;
+  filter: blur(var(--stack-blur));
+  opacity: var(--stack-opacity);
+  pointer-events: none;
+  transform: translate3d(0, var(--stack-y), calc(var(--stack-y) * -1))
+    rotate(var(--stack-rotation)) scale(var(--stack-scale));
+  transform-origin: 50% 90%;
+  transition:
+    filter 320ms ease,
+    opacity 320ms ease,
+    transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.cardLayer > article {
+  box-shadow: 0 24px 70px rgb(0 0 0 / 28%);
+}
+
+.cardLayer img {
+  -webkit-user-drag: none;
+}
+
+.topCard {
+  filter: none;
+  opacity: 1;
+  pointer-events: auto;
+  touch-action: pan-y;
+  transform: translate3d(var(--drag-x), var(--drag-y), 20px)
+    rotate(var(--drag-rotation));
+  animation: topCardIn 420ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.dragging {
+  cursor: grabbing;
+  transition: none;
+}
+
+.exitleft {
+  animation: swipeLeft 280ms cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+.exitright {
+  animation: swipeRight 280ms cubic-bezier(0.4, 0, 1, 1) both;
+  pointer-events: none;
+}
+
+.deckActions {
+  display: grid;
+  gap: var(--space-3);
+  grid-template-columns: 1fr 1fr;
+}
+
+.deckActions button {
+  display: inline-flex;
+  min-height: 46px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 650;
+  background: var(--color-control);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+}
+
+.deckActions button:last-child {
+  color: #ffffff;
+  background: var(--color-accent);
+  box-shadow: 0 8px 24px rgb(0 122 255 / 22%);
+}
+
+@keyframes topCardIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 18px, -20px) rotate(-2deg) scale(0.96);
+  }
+}
+
+@keyframes swipeLeft {
+  to {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate3d(-130vw, 30px, 40px) rotate(-24deg);
+  }
+}
+
+@keyframes swipeRight {
+  to {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translate3d(130vw, 30px, 40px) rotate(24deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cardLayer,
+  .topCard,
+  .exitleft,
+  .exitright {
+    animation-duration: 160ms !important;
+    transition-duration: 160ms !important;
+  }
+}

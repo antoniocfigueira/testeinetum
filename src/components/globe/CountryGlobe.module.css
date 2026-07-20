@@ -5,7 +5,6 @@
   background:
     radial-gradient(circle at 50% 48%, var(--color-accent-soft), transparent 44%),
     var(--color-surface-glass);
-  border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-floating);
   isolation: isolate;
@@ -55,7 +54,6 @@
   position: absolute;
   z-index: 2;
   background: var(--color-surface-glass);
-  border: 1px solid var(--color-border-highlight);
   box-shadow: var(--shadow-control-hover);
   backdrop-filter: blur(18px) saturate(160%);
   -webkit-backdrop-filter: blur(18px) saturate(160%);
@@ -145,8 +143,7 @@
     var(--color-background-elevated) 72%,
     transparent
   );
-  border: 1px solid var(--color-border-highlight);
-  border-radius: 14px;
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-floating);
   backdrop-filter: blur(20px) saturate(165%);
   -webkit-backdrop-filter: blur(20px) saturate(165%);
@@ -160,7 +157,7 @@
   flex: 0 0 42px;
   object-fit: cover;
   background: var(--color-control);
-  border-radius: 7px;
+  border-radius: var(--radius-sm);
   place-items: center;
 }
 
@@ -186,6 +183,11 @@
 .tooltip small {
   color: var(--color-text-secondary);
   font-size: 0.75rem;
+}
+
+.mobileAim,
+.aimCard {
+  display: none;
 }
 
 @media (max-width: 700px) {
@@ -215,6 +217,121 @@
 
   .mapStatus {
     display: none;
+  }
+
+  .mobileAim {
+    position: absolute;
+    z-index: 3;
+    top: 50%;
+    left: 50%;
+    display: grid;
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    background: rgb(255 255 255 / 10%);
+    box-shadow: 0 4px 18px rgb(0 0 0 / 26%);
+    backdrop-filter: blur(8px);
+    pointer-events: none;
+    transform: translate(-50%, -50%);
+    place-items: center;
+  }
+
+  .mobileAim::before,
+  .mobileAim::after {
+    position: absolute;
+    background: rgb(255 255 255 / 92%);
+    box-shadow: 0 1px 2px rgb(0 0 0 / 30%);
+    content: '';
+  }
+
+  .mobileAim::before {
+    width: 46px;
+    height: 1.5px;
+  }
+
+  .mobileAim::after {
+    width: 1.5px;
+    height: 46px;
+  }
+
+  .mobileAim span {
+    position: relative;
+    z-index: 1;
+    width: 6px;
+    height: 6px;
+    background: var(--color-accent);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--color-accent);
+  }
+
+  .aimCard {
+    position: absolute;
+    z-index: 4;
+    top: calc(50% + 34px);
+    left: 50%;
+    display: flex;
+    min-width: 168px;
+    max-width: min(230px, calc(100% - 32px));
+    min-height: 52px;
+    align-items: center;
+    gap: var(--space-3);
+    padding: 8px 12px;
+    color: var(--color-text-primary);
+    text-align: left;
+    background: color-mix(
+      in srgb,
+      var(--color-background-elevated) 72%,
+      transparent
+    );
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-floating);
+    cursor: pointer;
+    backdrop-filter: blur(22px) saturate(170%);
+    -webkit-backdrop-filter: blur(22px) saturate(170%);
+    transform: translateX(-50%);
+    animation: aimCardIn 220ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+
+  .aimCard img,
+  .aimCard > span {
+    display: grid;
+    width: 40px;
+    height: 29px;
+    flex: 0 0 40px;
+    object-fit: cover;
+    background: var(--color-control);
+    border-radius: var(--radius-sm);
+    place-items: center;
+  }
+
+  .aimCard div {
+    display: grid;
+    min-width: 0;
+    gap: 2px;
+  }
+
+  .aimCard small {
+    color: var(--color-accent);
+    font-size: 0.625rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .aimCard strong {
+    overflow: hidden;
+    color: var(--color-text-primary);
+    font-size: var(--font-size-sm);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+@keyframes aimCardIn {
+  from {
+    opacity: 0;
+    filter: blur(5px);
+    transform: translate(-50%, 6px) scale(0.94);
   }
 }
 

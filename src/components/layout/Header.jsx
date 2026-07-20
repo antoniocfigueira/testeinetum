@@ -33,7 +33,7 @@ function Header({ onLogout, onMenuOpen, user }) {
         {user ? (
           <ProfileMenu onLogout={onLogout} user={user} />
         ) : (
-          <GoogleSignInButton />
+          <GoogleSignInButton compact />
         )}
       </div>
     </header>

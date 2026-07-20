@@ -1,4 +1,5 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { geoContains } from 'd3-geo'
 import Globe from 'react-globe.gl'
 import { MeshStandardMaterial } from 'three'
 import { feature } from 'topojson-client'
@@ -79,11 +80,14 @@ function CountryGlobe({
   selectedCountry,
 }) {
   const globeRef = useRef(null)
+  const aimCardRef = useRef(null)
+  const aimTimerRef = useRef(null)
   const idleTimerRef = useRef(null)
   const lastPointerWakeRef = useRef(0)
   const { elementRef, height, width } = useElementSize()
   const { isDark } = useTheme()
   const [hoveredCountryId, setHoveredCountryId] = useState(null)
+  const [aimedCountry, setAimedCountry] = useState(null)
   const [isDocumentVisible, setIsDocumentVisible] = useState(
     () => document.visibilityState === 'visible',
   )
@@ -146,6 +150,45 @@ function CountryGlobe({
       polygonCountries: polygons,
     }
   }, [countries])
+
+  const updateAimedCountry = useCallback(() => {
+    if (width >= 700) return
+
+    const coordinates = globeRef.current?.toGlobeCoords(width / 2, height / 2)
+    const aimedPolygon = coordinates
+      ? polygonCountries.find((polygon) =>
+          geoContains(polygon, [coordinates.lng, coordinates.lat]),
+        )
+      : null
+    const nextCountry = aimedPolygon?.country ?? null
+
+    setAimedCountry((currentCountry) =>
+      currentCountry?.id === nextCountry?.id ? currentCountry : nextCountry,
+    )
+    setHoveredCountryId((currentCountryId) =>
+      currentCountryId === nextCountry?.id
+        ? currentCountryId
+        : nextCountry?.id ?? null,
+    )
+  }, [height, polygonCountries, width])
+
+  const scheduleAimUpdate = useCallback(() => {
+    if (width >= 700 || aimTimerRef.current) return
+
+    aimTimerRef.current = window.setTimeout(() => {
+      aimTimerRef.current = null
+      updateAimedCountry()
+    }, 110)
+  }, [updateAimedCountry, width])
+
+  useEffect(() => {
+    scheduleAimUpdate()
+
+    return () => {
+      window.clearTimeout(aimTimerRef.current)
+      aimTimerRef.current = null
+    }
+  }, [scheduleAimUpdate])
 
   const isFiltered = matchingCountryIds.size < countries.length
   const isMatch = useCallback(
@@ -221,12 +264,15 @@ function CountryGlobe({
     controls.enableDamping = true
     controls.dampingFactor = 0.08
     globeRef.current.pointOfView({ altitude: width < 700 ? 1.45 : 1.2 }, 0)
+    scheduleAimUpdate()
 
     if (shouldAnimate) wakeGlobe(6000, true)
     else pauseGlobe()
-  }, [pauseGlobe, shouldAnimate, wakeGlobe, width])
+  }, [pauseGlobe, scheduleAimUpdate, shouldAnimate, wakeGlobe, width])
 
   const handleHover = useCallback((country) => {
+    if (width < 700) return
+
     const nextCountryId = country?.id ?? null
 
     setHoveredCountryId((currentCountryId) =>
@@ -236,7 +282,7 @@ function CountryGlobe({
 
     const controls = globeRef.current?.controls()
     if (controls) controls.autoRotate = false
-  }, [wakeGlobe])
+  }, [wakeGlobe, width])
   const handlePointerMove = useCallback(() => {
     const currentTime = performance.now()
 
@@ -244,7 +290,8 @@ function CountryGlobe({
 
     lastPointerWakeRef.current = currentTime
     wakeGlobe(900)
-  }, [wakeGlobe])
+    scheduleAimUpdate()
+  }, [scheduleAimUpdate, wakeGlobe])
 
   const handleSelect = useCallback(
     (country, coordinates) => {
@@ -320,14 +367,30 @@ function CountryGlobe({
     [getCountryColor],
   )
   const getPolygonLabel = useCallback(
-    ({ country }) => getTooltip(country),
-    [],
+    ({ country }) => (width < 700 ? '' : getTooltip(country)),
+    [width],
   )
   const getPolygonSideColor = useCallback(
     () =>
       isDark ? 'rgba(10, 132, 255, 0.2)' : 'rgba(0, 64, 128, 0.12)',
     [isDark],
   )
+  const handleAimSelect = useCallback(() => {
+    if (!aimedCountry) return
+
+    const bounds = aimCardRef.current?.getBoundingClientRect()
+    const origin = bounds
+      ? {
+          height: bounds.height,
+          width: bounds.width,
+          x: bounds.left + bounds.width / 2,
+          y: bounds.top + bounds.height / 2,
+        }
+      : null
+
+    focusCountry(aimedCountry, 700)
+    onSelectCountry(aimedCountry, origin)
+  }, [aimedCountry, focusCountry, onSelectCountry])
 
   return (
     <section className={styles.panel} aria-label="Globo interativo de países">
@@ -340,7 +403,10 @@ function CountryGlobe({
         className={styles.viewport}
         onPointerDown={() => wakeGlobe(10000)}
         onPointerMove={handlePointerMove}
-        onPointerUp={() => wakeGlobe(1800)}
+        onPointerUp={() => {
+          wakeGlobe(1800)
+          scheduleAimUpdate()
+        }}
         onWheel={() => wakeGlobe(1800)}
         ref={elementRef}
       >
@@ -352,6 +418,7 @@ function CountryGlobe({
             globeMaterial={globeMaterial}
             height={height}
             onGlobeReady={handleGlobeReady}
+            onZoom={scheduleAimUpdate}
             onPolygonClick={handlePolygonClick}
             onPolygonHover={handlePolygonHover}
             polygonAltitude={getPolygonAltitude}
@@ -368,6 +435,33 @@ function CountryGlobe({
             waitForGlobeReady={false}
             width={width}
           />
+        )}
+
+        <div className={styles.mobileAim} aria-hidden="true">
+          <span />
+        </div>
+
+        {aimedCountry && (
+          <button
+            className={styles.aimCard}
+            key={aimedCountry.id}
+            onClick={handleAimSelect}
+            ref={aimCardRef}
+            type="button"
+          >
+            {aimedCountry.flag.svg || aimedCountry.flag.png ? (
+              <img
+                alt=""
+                src={aimedCountry.flag.svg || aimedCountry.flag.png}
+              />
+            ) : (
+              <span>{aimedCountry.flag.emoji}</span>
+            )}
+            <div>
+              <small>Na mira</small>
+              <strong>{aimedCountry.name}</strong>
+            </div>
+          </button>
         )}
       </div>
 
