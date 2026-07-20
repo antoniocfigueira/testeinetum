@@ -1,4 +1,4 @@
-import { ChevronDown, LogOut, UserRound } from 'lucide-react'
+import { LogOut, UserRound } from 'lucide-react'
 import { useEffect, useRef, useState } from 'react'
 import styles from './ProfileMenu.module.css'
 
@@ -55,6 +55,7 @@ function ProfileMenu({ onLogout, user }) {
   return (
     <div className={styles.wrapper} ref={menuRef}>
       <button
+        aria-label={`Abrir perfil de ${displayName}`}
         aria-expanded={isOpen}
         aria-haspopup="menu"
         className={styles.trigger}
@@ -72,12 +73,6 @@ function ProfileMenu({ onLogout, user }) {
             getInitials(displayName)
           )}
         </span>
-        <span className={styles.triggerName}>{displayName}</span>
-        <ChevronDown
-          aria-hidden="true"
-          className={isOpen ? styles.chevronOpen : styles.chevron}
-          size={15}
-        />
       </button>
 
       {isOpen && (

@@ -110,33 +110,28 @@ function CountryGlobe({
         fragmentShader: `
           uniform vec3 gradientAxis;
           uniform float gradientCenter;
-          varying vec3 vSurfaceNormal;
           varying vec3 vWorldPosition;
 
           void main() {
             vec3 appleBlue = vec3(0.0, 0.443137, 0.890196);
-            vec3 deepBlue = appleBlue * 0.68;
-            vec3 brightBlue = mix(appleBlue, vec3(1.0), 0.38);
+            vec3 lowerBlue = appleBlue * 0.86;
+            vec3 upperBlue = mix(appleBlue, vec3(1.0), 0.22);
             float localPosition = dot(normalize(vWorldPosition), gradientAxis) - gradientCenter;
-            float directionalGradient = smoothstep(0.0, 1.0, 0.5 + localPosition * 20.0);
-            float softLight = clamp(dot(normalize(vSurfaceNormal), normalize(vec3(-0.25, 0.7, 1.0))) * 0.5 + 0.5, 0.0, 1.0);
-            float gradientMix = clamp(directionalGradient * 0.78 + softLight * 0.22, 0.0, 1.0);
-            vec3 gradientColor = mix(deepBlue, brightBlue, gradientMix);
+            float verticalGradient = 0.5 + atan(localPosition * 6.0) / 3.14159265;
+            vec3 gradientColor = mix(lowerBlue, upperBlue, verticalGradient);
 
-            gl_FragColor = vec4(gradientColor, 0.86);
+            gl_FragColor = vec4(gradientColor, 0.82);
           }
         `,
         transparent: true,
         uniforms: {
-          gradientAxis: { value: new Vector3(1, 0, 0) },
+          gradientAxis: { value: new Vector3(0, 1, 0) },
           gradientCenter: { value: 0 },
         },
         vertexShader: `
-          varying vec3 vSurfaceNormal;
           varying vec3 vWorldPosition;
 
           void main() {
-            vSurfaceNormal = normalize(normalMatrix * normal);
             vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
             gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
           }
@@ -207,12 +202,12 @@ function CountryGlobe({
 
     const [latitude, longitude] = coordinates
     const center = globe.getCoords(latitude, longitude, 0)
-    const east = globe.getCoords(latitude, longitude + 1, 0)
+    const north = globe.getCoords(Math.min(latitude + 1, 89.9), longitude, 0)
     const centerVector = new Vector3(center.x, center.y, center.z).normalize()
     const gradientAxis = new Vector3(
-      east.x - center.x,
-      east.y - center.y,
-      east.z - center.z,
+      north.x - center.x,
+      north.y - center.y,
+      north.z - center.z,
     ).normalize()
 
     hoveredCountryMaterial.uniforms.gradientAxis.value.copy(gradientAxis)
@@ -477,8 +472,16 @@ function CountryGlobe({
     [width],
   )
   const getPolygonSideColor = useCallback(
-    () => (isDark ? 'rgba(242, 242, 247, 0.12)' : 'rgba(28, 28, 30, 0.1)'),
-    [isDark],
+    ({ country }) => {
+      if (hoveredCountryId === country.id) {
+        return 'rgba(62, 151, 240, 0.72)'
+      }
+
+      return isDark
+        ? 'rgba(242, 242, 247, 0.12)'
+        : 'rgba(28, 28, 30, 0.1)'
+    },
+    [hoveredCountryId, isDark],
   )
   return (
     <section className={styles.panel} aria-label="Globo interativo de países">

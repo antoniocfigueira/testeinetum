@@ -10,6 +10,7 @@ function ThemeToggle() {
     <button
       aria-label={`Ativar modo ${nextTheme}`}
       className={styles.toggle}
+      data-next-theme={isDark ? 'light' : 'dark'}
       onClick={toggleTheme}
       title={`Ativar modo ${nextTheme}`}
       type="button"

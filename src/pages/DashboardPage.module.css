@@ -130,15 +130,16 @@
 .viewToggle {
   --view-toggle-height: 40px;
   --view-toggle-radius: 20px;
+  --view-toggle-segment-width: 68px;
+  --view-toggle-segment-overlap: 14px;
+  --view-toggle-width: 122px;
 
   position: relative;
   isolation: isolate;
-  display: inline-grid;
-  width: 148px;
+  display: block;
+  width: var(--view-toggle-width);
   height: var(--view-toggle-height);
-  grid-template-columns: repeat(2, minmax(0, 1fr));
   justify-self: start;
-  gap: 0;
   padding: 0;
   overflow: hidden;
   background: rgb(28 28 30 / 86%);
@@ -149,11 +150,15 @@
   -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
+:global(:root:not([data-theme='dark'])) .viewToggle {
+  background: transparent;
+}
+
 .viewToggle::before {
   position: absolute;
   z-index: 0;
   inset: 0 auto 0 0;
-  width: 50%;
+  width: var(--view-toggle-segment-width);
   background: var(--color-action);
   border-radius: inherit;
   content: '';
@@ -163,19 +168,22 @@
 }
 
 .viewToggle[data-view-mode='list']::before {
-  transform: translateX(100%);
+  transform: translateX(
+    calc(100% - var(--view-toggle-segment-overlap))
+  );
 }
 
 .viewToggle button {
-  position: relative;
+  position: absolute;
   z-index: 1;
+  top: 0;
   display: inline-flex;
-  min-width: 0;
+  width: var(--view-toggle-segment-width);
   height: 100%;
   align-items: center;
   justify-content: center;
   padding: 0;
-  color: #fff;
+  color: var(--color-action);
   font-family: inherit;
   font-size: var(--font-size-xs);
   font-weight: 600;
@@ -184,15 +192,19 @@
   border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
-    color var(--transition-fast),
+    color 300ms cubic-bezier(0.22, 0.8, 0.24, 1),
     background-color var(--transition-fast),
     opacity var(--transition-fast),
     box-shadow var(--transition-fast),
     transform var(--transition-fast);
 }
 
-.viewToggle button:hover {
-  color: #fff;
+.viewToggle button:first-of-type {
+  left: 0;
+}
+
+.viewToggle button:last-of-type {
+  right: 0;
 }
 
 .viewToggle button:active {
@@ -200,6 +212,7 @@
 }
 
 .viewToggle .activeView {
+  z-index: 2;
   color: #fff;
   background: transparent;
   box-shadow: none;
@@ -215,7 +228,7 @@
   position: relative;
   isolation: isolate;
   display: inline-flex;
-  width: 74px;
+  width: 68px;
   min-height: 40px;
   align-items: center;
   justify-content: center;
