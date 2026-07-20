@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-export default defineConfig({
+export default defineConfig(({ command }) => ({
+  base: command === 'build' ? '/testeinetum/' : '/',
   plugins: [react()],
   optimizeDeps: {
     include: ['react-globe.gl', 'three'],
@@ -15,5 +16,5 @@ export default defineConfig({
   preview: {
     port: 4173,
   },
-})
+}))
 
