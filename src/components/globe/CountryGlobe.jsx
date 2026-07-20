@@ -1,7 +1,7 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { geoContains } from 'd3-geo'
 import Globe from 'react-globe.gl'
-import { MeshStandardMaterial } from 'three'
+import { MeshStandardMaterial, ShaderMaterial, Vector3 } from 'three'
 import { feature } from 'topojson-client'
 import worldAtlas from 'world-atlas/countries-110m.json'
 import useElementSize from '../../hooks/useElementSize.js'
@@ -27,14 +27,14 @@ const RENDERER_CONFIG = {
 
 const COUNTRY_COLORS = {
   dark: [
-    'rgba(116, 126, 142, 0.72)',
-    'rgba(132, 143, 158, 0.7)',
-    'rgba(103, 116, 134, 0.74)',
+    'rgba(142, 142, 147, 0.72)',
+    'rgba(174, 174, 178, 0.7)',
+    'rgba(120, 120, 125, 0.74)',
   ],
   light: [
-    'rgba(91, 102, 111, 0.55)',
-    'rgba(112, 121, 129, 0.5)',
-    'rgba(76, 91, 103, 0.56)',
+    'rgba(99, 99, 102, 0.55)',
+    'rgba(142, 142, 147, 0.5)',
+    'rgba(72, 72, 74, 0.56)',
   ],
 }
 
@@ -80,7 +80,6 @@ function CountryGlobe({
   selectedCountry,
 }) {
   const globeRef = useRef(null)
-  const aimCardRef = useRef(null)
   const aimTimerRef = useRef(null)
   const idleTimerRef = useRef(null)
   const lastPointerWakeRef = useRef(0)
@@ -88,6 +87,7 @@ function CountryGlobe({
   const { isDark } = useTheme()
   const [hoveredCountryId, setHoveredCountryId] = useState(null)
   const [aimedCountry, setAimedCountry] = useState(null)
+  const [isEdgeBlurActive, setIsEdgeBlurActive] = useState(false)
   const [isDocumentVisible, setIsDocumentVisible] = useState(
     () => document.visibilityState === 'visible',
   )
@@ -97,14 +97,59 @@ function CountryGlobe({
   const globeMaterial = useMemo(
     () =>
       new MeshStandardMaterial({
-        color: isDark ? '#111318' : '#dce5ea',
+        color: isDark ? '#171719' : '#d1d1d6',
         metalness: 0,
         roughness: 0.94,
       }),
     [isDark],
   )
+  const hoveredCountryMaterial = useMemo(
+    () =>
+      new ShaderMaterial({
+        depthWrite: true,
+        fragmentShader: `
+          uniform vec3 gradientAxis;
+          uniform float gradientCenter;
+          varying vec3 vSurfaceNormal;
+          varying vec3 vWorldPosition;
+
+          void main() {
+            vec3 appleBlue = vec3(0.0, 0.443137, 0.890196);
+            vec3 deepBlue = appleBlue * 0.68;
+            vec3 brightBlue = mix(appleBlue, vec3(1.0), 0.38);
+            float localPosition = dot(normalize(vWorldPosition), gradientAxis) - gradientCenter;
+            float directionalGradient = smoothstep(0.0, 1.0, 0.5 + localPosition * 20.0);
+            float softLight = clamp(dot(normalize(vSurfaceNormal), normalize(vec3(-0.25, 0.7, 1.0))) * 0.5 + 0.5, 0.0, 1.0);
+            float gradientMix = clamp(directionalGradient * 0.78 + softLight * 0.22, 0.0, 1.0);
+            vec3 gradientColor = mix(deepBlue, brightBlue, gradientMix);
+
+            gl_FragColor = vec4(gradientColor, 0.86);
+          }
+        `,
+        transparent: true,
+        uniforms: {
+          gradientAxis: { value: new Vector3(1, 0, 0) },
+          gradientCenter: { value: 0 },
+        },
+        vertexShader: `
+          varying vec3 vSurfaceNormal;
+          varying vec3 vWorldPosition;
+
+          void main() {
+            vSurfaceNormal = normalize(normalMatrix * normal);
+            vWorldPosition = (modelMatrix * vec4(position, 1.0)).xyz;
+            gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+          }
+        `,
+      }),
+    [],
+  )
 
   useEffect(() => () => globeMaterial.dispose(), [globeMaterial])
+  useEffect(
+    () => () => hoveredCountryMaterial.dispose(),
+    [hoveredCountryMaterial],
+  )
 
   useEffect(() => {
     const handleVisibilityChange = () => {
@@ -151,6 +196,31 @@ function CountryGlobe({
     }
   }, [countries])
 
+  useEffect(() => {
+    const hoveredPolygon = polygonCountries.find(
+      ({ country }) => country.id === hoveredCountryId,
+    )
+    const coordinates = hoveredPolygon?.country.coordinates
+    const globe = globeRef.current
+
+    if (!coordinates?.length || !globe) return
+
+    const [latitude, longitude] = coordinates
+    const center = globe.getCoords(latitude, longitude, 0)
+    const east = globe.getCoords(latitude, longitude + 1, 0)
+    const centerVector = new Vector3(center.x, center.y, center.z).normalize()
+    const gradientAxis = new Vector3(
+      east.x - center.x,
+      east.y - center.y,
+      east.z - center.z,
+    ).normalize()
+
+    hoveredCountryMaterial.uniforms.gradientAxis.value.copy(gradientAxis)
+    hoveredCountryMaterial.uniforms.gradientCenter.value =
+      centerVector.dot(gradientAxis)
+    hoveredCountryMaterial.uniformsNeedUpdate = true
+  }, [hoveredCountryId, hoveredCountryMaterial, polygonCountries])
+
   const updateAimedCountry = useCallback(() => {
     if (width >= 700) return
 
@@ -180,6 +250,21 @@ function CountryGlobe({
       updateAimedCountry()
     }, 110)
   }, [updateAimedCountry, width])
+
+  const handleZoom = useCallback(
+    (pointOfView) => {
+      scheduleAimUpdate()
+
+      const altitude = Number(
+        pointOfView?.altitude ?? globeRef.current?.pointOfView()?.altitude,
+      )
+      const shouldBlurEdges = Number.isFinite(altitude) && altitude < 0.96
+      setIsEdgeBlurActive((currentValue) =>
+        currentValue === shouldBlurEdges ? currentValue : shouldBlurEdges,
+      )
+    },
+    [scheduleAimUpdate],
+  )
 
   useEffect(() => {
     scheduleAimUpdate()
@@ -219,7 +304,15 @@ function CountryGlobe({
       window.clearTimeout(idleTimerRef.current)
       globe.resumeAnimation()
       if (controls) controls.autoRotate = autoRotate
-      idleTimerRef.current = window.setTimeout(pauseGlobe, idleDelay)
+      idleTimerRef.current = window.setTimeout(() => {
+        if (autoRotate && controls) {
+          controls.autoRotate = false
+          idleTimerRef.current = window.setTimeout(pauseGlobe, 1000)
+          return
+        }
+
+        pauseGlobe()
+      }, idleDelay)
     },
     [pauseGlobe, shouldAnimate],
   )
@@ -278,10 +371,7 @@ function CountryGlobe({
     setHoveredCountryId((currentCountryId) =>
       currentCountryId === nextCountryId ? currentCountryId : nextCountryId,
     )
-    wakeGlobe(country ? 1800 : 900)
-
-    const controls = globeRef.current?.controls()
-    if (controls) controls.autoRotate = false
+    wakeGlobe(country ? 1800 : 1000, !country)
   }, [wakeGlobe, width])
   const handlePointerMove = useCallback(() => {
     const currentTime = performance.now()
@@ -289,9 +379,14 @@ function CountryGlobe({
     if (currentTime - lastPointerWakeRef.current < 180) return
 
     lastPointerWakeRef.current = currentTime
-    wakeGlobe(900)
+    wakeGlobe(1200)
     scheduleAimUpdate()
   }, [scheduleAimUpdate, wakeGlobe])
+  const handlePointerLeave = useCallback(() => {
+    if (width < 700) return
+
+    wakeGlobe(1000, true)
+  }, [wakeGlobe, width])
 
   const handleSelect = useCallback(
     (country, coordinates) => {
@@ -336,8 +431,12 @@ function CountryGlobe({
 
   const getCountryColor = useCallback(
     (country) => {
-      if (selectedCountry?.id === country.id) return '#0a84ff'
-      if (hoveredCountryId === country.id) return '#64d2ff'
+      if (selectedCountry?.id === country.id) {
+        return isDark ? '#f2f2f7' : '#1c1c1e'
+      }
+      if (hoveredCountryId === country.id) {
+        return isDark ? '#d1d1d6' : '#636366'
+      }
       if (!isMatch(country)) {
         return isDark ? 'rgba(72, 72, 74, 0.28)' : 'rgba(174, 174, 178, 0.3)'
       }
@@ -366,32 +465,21 @@ function CountryGlobe({
     ({ country }) => getCountryColor(country),
     [getCountryColor],
   )
+  const getPolygonCapMaterial = useCallback(
+    ({ country }) =>
+      hoveredCountryId === country.id && selectedCountry?.id !== country.id
+        ? hoveredCountryMaterial
+        : undefined,
+    [hoveredCountryId, hoveredCountryMaterial, selectedCountry],
+  )
   const getPolygonLabel = useCallback(
     ({ country }) => (width < 700 ? '' : getTooltip(country)),
     [width],
   )
   const getPolygonSideColor = useCallback(
-    () =>
-      isDark ? 'rgba(10, 132, 255, 0.2)' : 'rgba(0, 64, 128, 0.12)',
+    () => (isDark ? 'rgba(242, 242, 247, 0.12)' : 'rgba(28, 28, 30, 0.1)'),
     [isDark],
   )
-  const handleAimSelect = useCallback(() => {
-    if (!aimedCountry) return
-
-    const bounds = aimCardRef.current?.getBoundingClientRect()
-    const origin = bounds
-      ? {
-          height: bounds.height,
-          width: bounds.width,
-          x: bounds.left + bounds.width / 2,
-          y: bounds.top + bounds.height / 2,
-        }
-      : null
-
-    focusCountry(aimedCountry, 700)
-    onSelectCountry(aimedCountry, origin)
-  }, [aimedCountry, focusCountry, onSelectCountry])
-
   return (
     <section className={styles.panel} aria-label="Globo interativo de países">
       <div className={styles.instructions}>
@@ -402,6 +490,7 @@ function CountryGlobe({
       <div
         className={styles.viewport}
         onPointerDown={() => wakeGlobe(10000)}
+        onPointerLeave={handlePointerLeave}
         onPointerMove={handlePointerMove}
         onPointerUp={() => {
           wakeGlobe(1800)
@@ -418,12 +507,13 @@ function CountryGlobe({
             globeMaterial={globeMaterial}
             height={height}
             onGlobeReady={handleGlobeReady}
-            onZoom={scheduleAimUpdate}
+            onZoom={handleZoom}
             onPolygonClick={handlePolygonClick}
             onPolygonHover={handlePolygonHover}
             polygonAltitude={getPolygonAltitude}
             polygonCapCurvatureResolution={5}
             polygonCapColor={getPolygonCapColor}
+            polygonCapMaterial={getPolygonCapMaterial}
             polygonLabel={getPolygonLabel}
             polygonsData={polygonCountries}
             polygonSideColor={getPolygonSideColor}
@@ -431,10 +521,18 @@ function CountryGlobe({
             ref={globeRef}
             rendererConfig={RENDERER_CONFIG}
             showAtmosphere={false}
-            showGraticules
             waitForGlobeReady={false}
             width={width}
           />
+        )}
+
+        {isEdgeBlurActive && (
+          <div className={styles.edgeBlur} aria-hidden="true">
+            <span className={styles.edgeBlurTop} />
+            <span className={styles.edgeBlurRight} />
+            <span className={styles.edgeBlurBottom} />
+            <span className={styles.edgeBlurLeft} />
+          </div>
         )}
 
         <div className={styles.mobileAim} aria-hidden="true">
@@ -442,12 +540,9 @@ function CountryGlobe({
         </div>
 
         {aimedCountry && (
-          <button
+          <div
             className={styles.aimCard}
             key={aimedCountry.id}
-            onClick={handleAimSelect}
-            ref={aimCardRef}
-            type="button"
           >
             {aimedCountry.flag.svg || aimedCountry.flag.png ? (
               <img
@@ -461,7 +556,7 @@ function CountryGlobe({
               <small>Na mira</small>
               <strong>{aimedCountry.name}</strong>
             </div>
-          </button>
+          </div>
         )}
       </div>
 

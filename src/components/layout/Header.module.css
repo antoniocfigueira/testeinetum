@@ -28,7 +28,15 @@
 }
 
 .brand {
+  gap: 8px;
   color: var(--color-text-primary);
+}
+
+.brandMark {
+  flex: 0 0 auto;
+  color: var(--color-action);
+  filter: drop-shadow(0 4px 8px color-mix(in srgb, var(--color-action) 28%, transparent));
+  transform: rotate(-8deg);
 }
 
 .brand strong {

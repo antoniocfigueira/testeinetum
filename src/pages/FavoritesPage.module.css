@@ -27,8 +27,10 @@
   max-width: 620px;
   margin: var(--space-3) 0 0;
   color: var(--color-text-secondary);
-  font-size: clamp(var(--font-size-md), 2vw, var(--font-size-lg));
-  line-height: 1.65;
+  font-size: clamp(1.125rem, 2.1vw, 1.45rem);
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  line-height: 1.45;
 }
 
 .count {
@@ -109,13 +111,13 @@
   align-items: center;
   padding: 0 var(--space-5);
   margin-top: var(--space-5);
-  color: #ffffff;
+  color: var(--color-on-action);
   font-size: var(--font-size-sm);
   font-weight: 650;
-  background: var(--color-accent);
+  background: var(--color-action);
   border: 0;
   border-radius: var(--radius-pill);
-  box-shadow: 0 7px 20px rgb(0 122 255 / 22%);
+  box-shadow: var(--shadow-control-hover);
   cursor: pointer;
   transition:
     background-color var(--transition-fast),
@@ -123,7 +125,7 @@
 }
 
 .emptyState a:hover {
-  background: var(--color-accent-hover);
+  background: var(--color-action-hover);
   transform: translateY(-1px);
 }
 

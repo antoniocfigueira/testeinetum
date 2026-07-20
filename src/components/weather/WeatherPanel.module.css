@@ -1,6 +1,6 @@
 .panel {
   padding: var(--space-5);
-  background: var(--color-accent-soft);
+  background: var(--color-action-soft);
   border-radius: var(--radius-xl);
 }
 
@@ -15,7 +15,7 @@
   width: 88px;
   height: 88px;
   flex: 0 0 88px;
-  color: var(--color-accent);
+  color: var(--color-text-primary);
   background: var(--color-surface-glass);
   border-radius: var(--radius-xl);
   place-items: center;
@@ -76,7 +76,7 @@
 }
 
 .weatherFacts dt svg {
-  color: var(--color-accent);
+  color: var(--color-text-tertiary);
 }
 
 .weatherFacts dd {

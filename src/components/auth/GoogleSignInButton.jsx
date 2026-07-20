@@ -2,7 +2,6 @@ import { GoogleLogin } from '@react-oauth/google'
 import { useEffect, useState } from 'react'
 import useAuth from '../../hooks/useAuth.js'
 import useTheme from '../../hooks/useTheme.js'
-import useToast from '../../hooks/useToast.js'
 import styles from './GoogleSignInButton.module.css'
 
 function GoogleSignInButton({ compact = false, onSuccess }) {
@@ -12,7 +11,6 @@ function GoogleSignInButton({ compact = false, onSuccess }) {
     reportLoginError,
   } = useAuth()
   const { isDark } = useTheme()
-  const { addToast } = useToast()
   const [isCompact, setIsCompact] = useState(() =>
     window.matchMedia('(max-width: 600px)').matches,
   )
@@ -28,26 +26,12 @@ function GoogleSignInButton({ compact = false, onSuccess }) {
 
   const handleSuccess = (credentialResponse) => {
     if (login(credentialResponse)) {
-      addToast('A sessão foi iniciada com sucesso.', {
-        title: 'Bem-vindo',
-        type: 'success',
-      })
       onSuccess?.()
-      return
     }
-
-    addToast('Não foi possível iniciar sessão com a conta Google.', {
-      title: 'Falha na autenticação',
-      type: 'error',
-    })
   }
 
   const handleError = () => {
     reportLoginError()
-    addToast('Não foi possível iniciar sessão com a conta Google.', {
-      title: 'Falha na autenticação',
-      type: 'error',
-    })
   }
 
   if (!isGoogleConfigured) {

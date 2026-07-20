@@ -2,12 +2,10 @@ import {
   AlertTriangle,
   Globe2,
   Languages,
-  LayoutGrid,
   Map,
   RefreshCw,
   SearchX,
   Shuffle,
-  Sparkles,
   Users,
 } from 'lucide-react'
 import {
@@ -185,7 +183,9 @@ function DashboardPage({ isActive = true }) {
   return (
     <section className={styles.dashboard}>
       <header className={styles.hero}>
-        <h1>O mundo está à tua espera.</h1>
+        <h1>
+          O <span className={styles.heroAccent}>mundo</span> está à tua espera.
+        </h1>
         <p>
           Explora destinos, conhece novas culturas e reúne a informação
           essencial para a próxima viagem.
@@ -234,7 +234,6 @@ function DashboardPage({ isActive = true }) {
                       onClick={() => setViewMode('globe')}
                       type="button"
                     >
-                      <Globe2 size={18} />
                       Globo
                     </button>
                     <button
@@ -243,7 +242,6 @@ function DashboardPage({ isActive = true }) {
                       onClick={() => setViewMode('list')}
                       type="button"
                     >
-                      <LayoutGrid size={18} />
                       Lista
                     </button>
                   </div>
@@ -252,7 +250,6 @@ function DashboardPage({ isActive = true }) {
                     onClick={() => setIsQuizOpen(true)}
                     type="button"
                   >
-                    <Sparkles size={17} />
                     Quiz
                   </button>
                 </div>

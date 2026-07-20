@@ -13,7 +13,7 @@ Aplicação React para explorar países, consultar meteorologia e guardar destin
 - Favoritos persistentes por utilizador através de Context API e `localStorage`.
 - Atualização local dos dados de perfil.
 - Glassmorphism, fundo animado, cartões interativos, skeleton loading e temas claro/escuro.
-- Estados de loading, mensagens de erro e notificações visuais.
+- Estados de loading e mensagens de erro integradas nos componentes.
 
 ## Tecnologias
 
@@ -71,7 +71,7 @@ npm run preview    # pré-visualização do build
 ```text
 src/
 ├── components/  componentes reutilizáveis, layout, globo e meteorologia
-├── context/     autenticação, favoritos, tema e notificações
+├── context/     autenticação, favoritos e tema
 ├── hooks/       hooks de dados e comportamento
 ├── pages/       páginas da aplicação
 ├── services/    clientes das APIs externas

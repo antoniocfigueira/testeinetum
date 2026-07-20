@@ -18,12 +18,28 @@
   line-height: 0.96;
 }
 
+.heroAccent {
+  display: inline-block;
+  padding-right: 0.075em;
+  margin-right: -0.075em;
+  color: transparent;
+  background: linear-gradient(
+    105deg,
+    var(--color-action) 8%,
+    color-mix(in srgb, var(--color-action) 76%, white) 96%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
 .hero p {
   max-width: 650px;
   margin: 0;
   color: var(--color-text-secondary);
-  font-size: clamp(var(--font-size-md), 2vw, var(--font-size-lg));
-  line-height: 1.65;
+  font-size: clamp(1.125rem, 2.2vw, 1.5rem);
+  font-weight: 300;
+  letter-spacing: -0.042em;
+  line-height: 1.45;
 }
 
 .statusPanel {
@@ -112,26 +128,34 @@
 }
 
 .viewToggle {
+  --view-toggle-height: 40px;
+  --view-toggle-radius: 20px;
+
   position: relative;
+  isolation: isolate;
   display: inline-grid;
   width: 148px;
+  height: var(--view-toggle-height);
   grid-template-columns: repeat(2, minmax(0, 1fr));
   justify-self: start;
-  padding: 2px;
-  background: var(--color-control);
-  border-radius: var(--radius-pill);
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+  background: rgb(28 28 30 / 86%);
+  border: 0;
+  border-radius: var(--view-toggle-radius);
+  box-shadow: inset 0 0 0 1px var(--color-action);
+  backdrop-filter: blur(18px) saturate(150%);
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
 }
 
 .viewToggle::before {
   position: absolute;
   z-index: 0;
-  top: 2px;
-  bottom: 2px;
-  left: 2px;
-  width: calc((100% - 4px) / 2);
-  background: var(--color-surface);
-  border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-control);
+  inset: 0 auto 0 0;
+  width: 50%;
+  background: var(--color-action);
+  border-radius: inherit;
   content: '';
   pointer-events: none;
   transform: translateX(0);
@@ -146,63 +170,66 @@
   position: relative;
   z-index: 1;
   display: inline-flex;
-  min-height: 36px;
+  min-width: 0;
+  height: 100%;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0 10px;
-  color: var(--color-text-secondary);
+  padding: 0;
+  color: #fff;
+  font-family: inherit;
   font-size: var(--font-size-xs);
   font-weight: 600;
   background: transparent;
+  border: 0;
   border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
     color var(--transition-fast),
     background-color var(--transition-fast),
+    opacity var(--transition-fast),
     box-shadow var(--transition-fast),
     transform var(--transition-fast);
 }
 
 .viewToggle button:hover {
-  color: var(--color-text-primary);
+  color: #fff;
 }
 
 .viewToggle button:active {
-  transform: scale(0.97);
+  opacity: 0.82;
 }
 
 .viewToggle .activeView {
-  color: var(--color-text-primary);
+  color: #fff;
   background: transparent;
   box-shadow: none;
 }
 
 .activeView svg {
-  color: var(--color-accent);
+  color: inherit;
 }
 
 .quizButton {
-  --quiz-button-fill: var(--color-control);
+  --quiz-button-fill: var(--color-action);
 
   position: relative;
   isolation: isolate;
   display: inline-flex;
+  width: 74px;
   min-height: 40px;
   align-items: center;
   justify-content: center;
-  gap: 6px;
-  padding: 0 var(--space-3);
-  color: var(--color-text-secondary);
+  padding: 0;
+  color: var(--color-on-action);
+  font-family: inherit;
   font-size: var(--font-size-xs);
-  font-weight: 700;
-  letter-spacing: 0.02em;
+  font-weight: 600;
+  letter-spacing: normal;
   background: var(--quiz-button-fill);
-  border: 1px solid rgb(142 142 147 / 28%);
+  border: 1px solid var(--color-action);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-control);
   cursor: pointer;
-  text-transform: uppercase;
   transition:
     color var(--transition-fast),
     background-color var(--transition-fast),
@@ -220,9 +247,9 @@
   background: conic-gradient(
     from var(--quiz-highlight-angle),
     transparent 0deg 258deg,
-    rgb(100 210 255 / 16%) 276deg,
+    rgb(0 113 227 / 18%) 276deg,
     rgb(255 255 255 / 96%) 298deg,
-    rgb(10 132 255 / 88%) 314deg,
+    var(--color-action) 314deg,
     transparent 338deg
   );
   border-radius: inherit;
@@ -241,9 +268,9 @@
 
 .quizButton:hover,
 .quizButtonActive {
-  --quiz-button-fill: var(--color-accent-soft);
+  --quiz-button-fill: var(--color-action-hover);
 
-  color: var(--color-accent);
+  color: var(--color-on-action);
 }
 
 .quizButton:active {
@@ -298,19 +325,23 @@
   align-items: center;
   gap: var(--space-2);
   padding: 0 var(--space-4);
-  color: var(--color-accent);
+  color: var(--color-action);
   font-size: var(--font-size-sm);
   font-weight: 650;
-  background: var(--color-accent-soft);
+  background: transparent;
+  border: 1px solid var(--color-action);
   border-radius: var(--radius-pill);
   cursor: pointer;
   transition:
+    color var(--transition-fast),
     background-color var(--transition-fast),
+    border-color var(--transition-fast),
     transform var(--transition-fast);
 }
 
 .suggestionsHeader button:hover {
-  background: color-mix(in srgb, var(--color-accent) 17%, transparent);
+  color: var(--color-on-action);
+  background: var(--color-action);
   transform: translateY(-1px);
 }
 
@@ -397,12 +428,23 @@
   min-height: 42px;
   padding: 0 var(--space-5);
   margin-top: var(--space-5);
-  color: var(--color-accent);
+  color: var(--color-action);
   font-size: var(--font-size-sm);
   font-weight: 650;
-  background: var(--color-accent-soft);
+  background: transparent;
+  border: 1px solid var(--color-action);
   border-radius: var(--radius-pill);
   cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.emptyState button:hover {
+  color: var(--color-on-action);
+  background: var(--color-action);
+  transform: translateY(-1px);
 }
 
 .stats {
@@ -421,6 +463,23 @@
   box-shadow: var(--shadow-card);
   backdrop-filter: blur(var(--blur-glass));
   -webkit-backdrop-filter: blur(var(--blur-glass));
+  transform: translateZ(0);
+  transition:
+    background-color var(--transition-base),
+    box-shadow var(--transition-slow),
+    transform var(--transition-slow);
+}
+
+.statCard:hover {
+  background: color-mix(
+    in srgb,
+    var(--color-surface-glass) 88%,
+    var(--color-action) 12%
+  );
+  box-shadow:
+    var(--shadow-floating),
+    0 0 34px var(--color-action-soft);
+  transform: translateY(-5px) scale(1.018);
 }
 
 .statIcon {
@@ -431,6 +490,16 @@
   background: var(--color-accent-soft);
   border-radius: var(--radius-md);
   place-items: center;
+  transition:
+    color var(--transition-base),
+    background-color var(--transition-base),
+    transform var(--transition-slow);
+}
+
+.statCard:hover .statIcon {
+  color: var(--color-on-action);
+  background: var(--color-action);
+  transform: scale(1.08);
 }
 
 .statCard strong {

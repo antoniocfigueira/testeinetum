@@ -34,10 +34,10 @@
   height: 38px;
   flex: 0 0 38px;
   overflow: hidden;
-  color: #ffffff;
+  color: var(--color-on-accent);
   font-size: var(--font-size-xs);
   font-weight: 750;
-  background: linear-gradient(145deg, #af52de, #0a84ff);
+  background: var(--color-accent);
   border-radius: 50%;
   place-items: center;
 }

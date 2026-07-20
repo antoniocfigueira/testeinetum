@@ -48,7 +48,7 @@
     var(--space-7)
     clamp(var(--space-5), 4vw, var(--space-10))
     var(--space-7)
-    calc(var(--space-4) + 70px + var(--space-4));
+    calc(var(--space-4) + 70px + var(--space-7));
 }
 
 .main:focus {
@@ -70,8 +70,8 @@
   top: var(--space-3);
   left: var(--space-3);
   padding: var(--space-3) var(--space-4);
-  color: #ffffff;
-  background: var(--color-accent);
+  color: var(--color-on-action);
+  background: var(--color-action);
   border-radius: var(--radius-pill);
   box-shadow: var(--shadow-floating);
   transform: translateY(-160%);

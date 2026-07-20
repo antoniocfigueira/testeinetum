@@ -65,12 +65,17 @@
   flex: 0 0 46px;
   overflow: hidden;
   color: #ffffff;
-  background: linear-gradient(145deg, #64d2ff 0%, #0a84ff 48%, #0057d9 100%);
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-action) 58%, white) 0%,
+    var(--color-action) 48%,
+    color-mix(in srgb, var(--color-action) 78%, black) 100%
+  );
   border-radius: 50%;
   box-shadow:
     inset 0 1px 1px rgb(255 255 255 / 35%),
     inset 0 -8px 16px rgb(0 45 120 / 16%),
-    0 7px 18px rgb(0 122 255 / 30%);
+    0 7px 18px color-mix(in srgb, var(--color-action) 30%, transparent);
   place-items: center;
 }
 
@@ -222,24 +227,14 @@
 }
 
 .navigationItem.active {
-  color: var(--color-text-primary);
+  color: #ffffff;
   font-weight: 650;
-  background: var(--color-control-active);
+  background: #636366;
 }
 
 .navigationItem.active svg {
-  color: var(--color-accent);
-}
-
-.navigationItem.active::after {
-  position: absolute;
-  top: 12px;
-  left: 2px;
-  bottom: 12px;
-  width: 3px;
-  background: var(--color-accent);
-  border-radius: var(--radius-pill);
-  content: '';
+  color: #ffffff;
+  filter: drop-shadow(0 1px 2px rgb(0 0 0 / 24%));
 }
 
 @media (max-width: 900px) {

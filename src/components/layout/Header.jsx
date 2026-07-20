@@ -1,4 +1,4 @@
-import { Menu } from 'lucide-react'
+import { Menu, Plane } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import GoogleSignInButton from '../auth/GoogleSignInButton.jsx'
 import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx'
@@ -24,6 +24,12 @@ function Header({ onLogout, onMenuOpen, user }) {
           className={styles.brand}
           to="/dashboard"
         >
+          <Plane
+            aria-hidden="true"
+            className={styles.brandMark}
+            size={21}
+            strokeWidth={1.9}
+          />
           <strong>Inetum Travel</strong>
         </Link>
       </div>

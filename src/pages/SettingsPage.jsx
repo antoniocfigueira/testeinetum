@@ -1,7 +1,6 @@
 import { Image, LockKeyhole, Save, User } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import useAuth from '../hooks/useAuth.js'
-import useToast from '../hooks/useToast.js'
 import styles from './SettingsPage.module.css'
 
 function getInitials(name) {
@@ -27,7 +26,6 @@ function isValidPictureUrl(value) {
 
 function SettingsPage() {
   const { updateProfile, user } = useAuth()
-  const { addToast } = useToast()
   const [form, setForm] = useState({
     name: user?.name ?? '',
     picture: user?.picture ?? '',
@@ -65,17 +63,7 @@ function SettingsPage() {
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
 
-    const wasSaved = updateProfile(form)
-
-    addToast(
-      wasSaved
-        ? 'As alterações da conta foram guardadas neste dispositivo.'
-        : 'O perfil foi atualizado, mas não foi possível guardá-lo neste dispositivo.',
-      {
-        title: wasSaved ? 'Perfil atualizado' : 'Falha ao guardar',
-        type: wasSaved ? 'success' : 'error',
-      },
-    )
+    updateProfile(form)
   }
 
   return (
