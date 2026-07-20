@@ -1,8 +1,6 @@
 .shell {
   position: relative;
-  display: grid;
   min-height: 100dvh;
-  grid-template-columns: 96px minmax(0, 1fr);
   overflow: hidden;
   isolation: isolate;
 }
@@ -39,15 +37,18 @@
   min-width: 0;
   min-height: 100dvh;
   flex-direction: column;
-  grid-column: 2;
+  padding-top: 68px;
 }
 
 .main {
   width: 100%;
-  max-width: 1600px;
   flex: 1;
-  align-self: center;
-  padding: var(--space-7) clamp(var(--space-5), 4vw, var(--space-10));
+  align-self: stretch;
+  padding:
+    var(--space-7)
+    clamp(var(--space-5), 4vw, var(--space-10))
+    var(--space-7)
+    calc(var(--space-4) + 70px + var(--space-4));
 }
 
 .main:focus {
@@ -99,14 +100,23 @@
 
   .workspace {
     min-height: 100dvh;
+    padding-top: 68px;
   }
 
   .backdrop {
     display: block;
   }
+
+  .main {
+    padding: var(--space-7) clamp(var(--space-5), 4vw, var(--space-10));
+  }
 }
 
 @media (max-width: 600px) {
+  .workspace {
+    padding-top: 64px;
+  }
+
   .main {
     padding: var(--space-5) var(--space-4);
   }

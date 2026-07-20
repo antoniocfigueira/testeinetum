@@ -1,7 +1,6 @@
-import { Check, Image, LockKeyhole, Moon, Save, Sun, User } from 'lucide-react'
+import { Image, LockKeyhole, Save, User } from 'lucide-react'
 import { useEffect, useMemo, useState } from 'react'
 import useAuth from '../hooks/useAuth.js'
-import useTheme from '../hooks/useTheme.js'
 import useToast from '../hooks/useToast.js'
 import styles from './SettingsPage.module.css'
 
@@ -28,12 +27,17 @@ function isValidPictureUrl(value) {
 
 function SettingsPage() {
   const { updateProfile, user } = useAuth()
-  const { setTheme, theme } = useTheme()
   const { addToast } = useToast()
-  const [form, setForm] = useState({ name: user?.name ?? '', picture: user?.picture ?? '' })
+  const [form, setForm] = useState({
+    name: user?.name ?? '',
+    picture: user?.picture ?? '',
+  })
   const [imageFailed, setImageFailed] = useState(false)
   const [errors, setErrors] = useState({})
-  const initials = useMemo(() => getInitials(form.name || user?.email || 'IT'), [form.name, user?.email])
+  const initials = useMemo(
+    () => getInitials(form.name || user?.email || 'IT'),
+    [form.name, user?.email],
+  )
 
   useEffect(() => {
     setForm({ name: user?.name ?? '', picture: user?.picture ?? '' })
@@ -78,7 +82,7 @@ function SettingsPage() {
     <section className={styles.page}>
       <header className={styles.header}>
         <h1>Definições da conta.</h1>
-        <p>Personaliza o teu perfil e a forma como a aplicação é apresentada.</p>
+        <p>Atualiza os dados apresentados no teu perfil.</p>
       </header>
 
       <div className={styles.layout}>
@@ -155,51 +159,6 @@ function SettingsPage() {
             Guardar alterações
           </button>
         </form>
-
-        <aside className={styles.preferences}>
-          <div className={styles.sectionHeading}>
-            <span aria-hidden="true">
-              {theme === 'dark' ? <Moon size={20} /> : <Sun size={20} />}
-            </span>
-            <div>
-              <h2>Aparência</h2>
-              <p>Escolhe o tema mais confortável para ti.</p>
-            </div>
-          </div>
-
-          <div className={styles.themePicker} aria-label="Tema da aplicação">
-            <button
-              aria-pressed={theme === 'light'}
-              className={theme === 'light' ? styles.selectedTheme : ''}
-              onClick={() => setTheme('light')}
-              type="button"
-            >
-              <Sun size={19} />
-              Claro
-              {theme === 'light' && <Check size={17} />}
-            </button>
-            <button
-              aria-pressed={theme === 'dark'}
-              className={theme === 'dark' ? styles.selectedTheme : ''}
-              onClick={() => setTheme('dark')}
-              type="button"
-            >
-              <Moon size={19} />
-              Escuro
-              {theme === 'dark' && <Check size={17} />}
-            </button>
-          </div>
-
-          <div className={styles.accountStatus}>
-            <span aria-hidden="true">
-              <Check size={18} />
-            </span>
-            <div>
-              <strong>Conta Google ligada</strong>
-              <p>A sessão está protegida e expira automaticamente.</p>
-            </div>
-          </div>
-        </aside>
       </div>
     </section>
   )

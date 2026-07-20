@@ -2,9 +2,7 @@ import { ArrowLeft, Map } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import styles from './PublicPage.module.css'
 
-function NotFoundPage({ isAuthenticated }) {
-  const destination = isAuthenticated ? '/dashboard' : '/login'
-
+function NotFoundPage() {
   return (
     <main className={styles.page}>
       <section className={styles.card}>
@@ -14,7 +12,7 @@ function NotFoundPage({ isAuthenticated }) {
         </span>
         <h1>Página não encontrada</h1>
         <p>Este destino não existe ou pode ter mudado de endereço.</p>
-        <Link className={styles.primaryButton} to={destination}>
+        <Link className={styles.primaryButton} to="/dashboard">
           <ArrowLeft size={18} />
           Voltar ao caminho certo
         </Link>

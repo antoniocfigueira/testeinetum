@@ -41,6 +41,14 @@
   outline: none;
 }
 
+.viewport :global(.float-tooltip-kap) {
+  max-width: none;
+  padding: 0;
+  color: inherit;
+  background: transparent;
+  border-radius: 0;
+}
+
 .instructions,
 .mapStatus,
 .selection {
@@ -90,11 +98,6 @@
   pointer-events: none;
 }
 
-.mapStatus span + span::before {
-  margin-right: var(--space-3);
-  content: '·';
-}
-
 .selection {
   bottom: var(--space-5);
   left: var(--space-5);
@@ -137,10 +140,16 @@
   gap: 11px;
   padding: 11px 13px;
   color: var(--color-text-primary);
-  background: var(--color-background-elevated);
+  background: color-mix(
+    in srgb,
+    var(--color-background-elevated) 72%,
+    transparent
+  );
   border: 1px solid var(--color-border-highlight);
   border-radius: 14px;
   box-shadow: var(--shadow-floating);
+  backdrop-filter: blur(20px) saturate(165%);
+  -webkit-backdrop-filter: blur(20px) saturate(165%);
 }
 
 .tooltip img,

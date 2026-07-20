@@ -4,7 +4,7 @@ Aplicação React para explorar países, consultar meteorologia e guardar destin
 
 ## Funcionalidades
 
-- Autenticação Google e proteção das rotas privadas.
+- Autenticação Google opcional no header e proteção das definições da conta.
 - Perfil com nome, email, fotografia e logout.
 - Globo 3D interativo com rotação, zoom, hover e seleção de países.
 - Pesquisa em tempo real com debounce por país, capital, região, moeda ou idioma.
@@ -50,7 +50,8 @@ Para desenvolvimento local, adiciona `http://localhost:5173` às origens JavaScr
    npm run dev
    ```
 
-4. Abre `http://localhost:5173`.
+4. Abre `http://localhost:5173`. A aplicação entra diretamente na Dashboard;
+   o login Google pode ser iniciado no header quando for necessário.
 
 O ficheiro `.env` não deve ser enviado para o repositório. Depois de alterares variáveis de ambiente, reinicia o servidor Vite.
 

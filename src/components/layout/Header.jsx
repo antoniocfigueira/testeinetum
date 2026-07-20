@@ -1,4 +1,6 @@
 import { Menu } from 'lucide-react'
+import { Link } from 'react-router-dom'
+import GoogleSignInButton from '../auth/GoogleSignInButton.jsx'
 import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx'
 import ProfileMenu from './ProfileMenu.jsx'
 import styles from './Header.module.css'
@@ -6,19 +8,33 @@ import styles from './Header.module.css'
 function Header({ onLogout, onMenuOpen, user }) {
   return (
     <header className={styles.header}>
-      <button
-        aria-controls="app-sidebar"
-        aria-label="Abrir menu de navegação"
-        className={styles.menuButton}
-        onClick={onMenuOpen}
-        type="button"
-      >
-        <Menu size={21} />
-      </button>
+      <div className={styles.leading}>
+        <button
+          aria-controls="app-sidebar"
+          aria-label="Abrir menu de navegação"
+          className={styles.menuButton}
+          onClick={onMenuOpen}
+          type="button"
+        >
+          <Menu size={21} />
+        </button>
+
+        <Link
+          aria-label="Inetum Travel — Dashboard"
+          className={styles.brand}
+          to="/dashboard"
+        >
+          <strong>Inetum Travel</strong>
+        </Link>
+      </div>
 
       <div className={styles.actions}>
         <ThemeToggle />
-        <ProfileMenu onLogout={onLogout} user={user} />
+        {user ? (
+          <ProfileMenu onLogout={onLogout} user={user} />
+        ) : (
+          <GoogleSignInButton />
+        )}
       </div>
     </header>
   )

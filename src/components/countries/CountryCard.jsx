@@ -1,11 +1,7 @@
-import { Coins, Flag, Heart, Languages, MapPin, Users } from 'lucide-react'
+import { Flag, Heart, MapPin, Users } from 'lucide-react'
 import { useState } from 'react'
 import { formatInteger } from '../../utils/formatters.js'
 import styles from './CountryCard.module.css'
-
-function joinValues(values, fallback = 'Não disponível') {
-  return values.filter(Boolean).join(', ') || fallback
-}
 
 function CountryCard({
   country,
@@ -15,14 +11,6 @@ function CountryCard({
 }) {
   const [hasFlagError, setHasFlagError] = useState(false)
   const flagUrl = country.flag.svg || country.flag.png
-  const currencyLabel = joinValues(
-    country.currencies.map((currency) =>
-      [currency.code, currency.symbol].filter(Boolean).join(' '),
-    ),
-  )
-  const languageLabel = joinValues(
-    country.languages.map((language) => language.name),
-  )
 
   return (
     <article className={styles.card}>
@@ -86,17 +74,8 @@ function CountryCard({
           </div>
         </dl>
 
-        <div className={styles.secondaryFacts}>
-          <div title={currencyLabel}>
-            <Coins aria-hidden="true" size={17} />
-            <span>{currencyLabel}</span>
-          </div>
-          <div title={languageLabel}>
-            <Languages aria-hidden="true" size={17} />
-            <span>{languageLabel}</span>
-          </div>
         </div>
-        </div>
+        <span className={styles.revealLabel}>Mostrar informações</span>
       </button>
     </article>
   )

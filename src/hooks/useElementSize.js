@@ -11,10 +11,14 @@ function useElementSize() {
 
     const updateSize = () => {
       const { height, width } = element.getBoundingClientRect()
+      const roundedHeight = Math.round(height)
+      const roundedWidth = Math.round(width)
+
+      if (roundedHeight <= 0 || roundedWidth <= 0) return
 
       setSize({
-        height: Math.round(height),
-        width: Math.round(width),
+        height: roundedHeight,
+        width: roundedWidth,
       })
     }
 

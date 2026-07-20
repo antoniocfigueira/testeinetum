@@ -39,6 +39,7 @@
   text-rendering: optimizeLegibility;
 
   --color-background: #f2f2f7;
+  --color-header: #fbfbfd;
   --color-background-elevated: #ffffff;
   --color-surface: #ffffff;
   --color-surface-glass: rgb(255 255 255 / 72%);
@@ -107,6 +108,7 @@
   color-scheme: dark;
 
   --color-background: #1c1c1e;
+  --color-header: #252527;
   --color-background-elevated: #2c2c2e;
   --color-surface: #2c2c2e;
   --color-surface-glass: rgb(44 44 46 / 76%);
@@ -146,6 +148,7 @@ html {
   min-width: 320px;
   min-height: 100%;
   background: var(--color-background);
+  scrollbar-gutter: stable;
   scroll-behavior: smooth;
 }
 

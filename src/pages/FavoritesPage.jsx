@@ -1,12 +1,15 @@
-import { AlertTriangle, Heart, Map } from 'lucide-react'
+import { AlertTriangle, Heart, LogIn, Map } from 'lucide-react'
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import GoogleSignInButton from '../components/auth/GoogleSignInButton.jsx'
 import CountryDetailsModal from '../components/countries/CountryDetailsModal.jsx'
 import CountryGrid from '../components/countries/CountryGrid.jsx'
+import useAuth from '../hooks/useAuth.js'
 import useFavorites from '../hooks/useFavorites.js'
 import styles from './FavoritesPage.module.css'
 
 function FavoritesPage() {
+  const { isAuthenticated } = useAuth()
   const { favoriteCount, favorites, persistenceError } = useFavorites()
   const [selectedCountry, setSelectedCountry] = useState(null)
 
@@ -20,20 +23,36 @@ function FavoritesPage() {
             viagem ao teu ritmo.
           </p>
         </div>
-        <span className={styles.count} aria-live="polite">
-          <Heart fill="currentColor" size={17} />
-          {favoriteCount === 1 ? '1 destino' : `${favoriteCount} destinos`}
-        </span>
+        {isAuthenticated && (
+          <span className={styles.count} aria-live="polite">
+            <Heart fill="currentColor" size={17} />
+            {favoriteCount === 1 ? '1 destino' : `${favoriteCount} destinos`}
+          </span>
+        )}
       </header>
 
-      {persistenceError && (
+      {isAuthenticated && persistenceError && (
         <div className={styles.warning} role="alert">
           <AlertTriangle aria-hidden="true" size={20} />
           <span>{persistenceError}</span>
         </div>
       )}
 
-      {favorites.length ? (
+      {!isAuthenticated ? (
+        <div className={styles.emptyState}>
+          <span aria-hidden="true">
+            <LogIn size={31} strokeWidth={1.7} />
+          </span>
+          <h2>Inicia sessão para gerir favoritos</h2>
+          <p>
+            Guarda os países que mais gostas e consulta a tua seleção sempre
+            que voltares.
+          </p>
+          <div className={styles.loginAction}>
+            <GoogleSignInButton />
+          </div>
+        </div>
+      ) : favorites.length ? (
         <CountryGrid
           countries={favorites}
           onSelectCountry={setSelectedCountry}

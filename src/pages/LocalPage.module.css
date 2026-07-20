@@ -1,7 +1,7 @@
 .page {
   display: grid;
-  gap: clamp(var(--space-7), 4vw, var(--space-9));
-  padding-block: var(--space-2) var(--space-9);
+  gap: clamp(var(--space-5), 2.5vw, var(--space-7));
+  padding-block: 0 var(--space-7);
 }
 
 .header {
@@ -11,7 +11,7 @@
 .header h1 {
   margin: 0;
   color: var(--color-text-primary);
-  font-size: clamp(2.5rem, 6vw, 4.75rem);
+  font-size: clamp(2.25rem, 5vw, 3.75rem);
   letter-spacing: -0.065em;
   line-height: 0.96;
 }
@@ -39,7 +39,7 @@
 
 .permissionCard {
   display: grid;
-  min-height: 430px;
+  min-height: 350px;
   align-content: center;
   justify-items: center;
   padding: var(--space-8);
@@ -292,12 +292,12 @@
 
 @media (max-width: 600px) {
   .page {
-    gap: var(--space-7);
-    padding-block: 0 var(--space-7);
+    gap: var(--space-5);
+    padding-block: 0 var(--space-6);
   }
 
   .permissionCard {
-    min-height: 380px;
+    min-height: 330px;
     padding: var(--space-6);
     border-radius: var(--radius-xl);
   }

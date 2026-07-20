@@ -25,14 +25,10 @@
 }
 
 .layout {
-  display: grid;
-  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.75fr);
-  align-items: start;
-  gap: var(--space-5);
+  width: min(100%, 880px);
 }
 
-.profileCard,
-.preferences {
+.profileCard {
   padding: clamp(var(--space-5), 4vw, var(--space-8));
   background: var(--color-surface-glass);
   border: 1px solid var(--color-border-highlight);
@@ -229,97 +225,13 @@
   transform: translateY(-1px);
 }
 
-.preferences {
-  display: grid;
-  gap: var(--space-6);
-}
-
-.themePicker {
-  display: grid;
-  gap: var(--space-2);
-  padding: var(--space-1);
-  background: var(--color-control);
-  border-radius: var(--radius-lg);
-}
-
-.themePicker button {
-  display: grid;
-  min-height: 50px;
-  grid-template-columns: auto 1fr auto;
-  align-items: center;
-  gap: var(--space-3);
-  padding: 0 var(--space-4);
-  color: var(--color-text-secondary);
-  text-align: left;
-  background: transparent;
-  border-radius: var(--radius-md);
-  cursor: pointer;
-  transition:
-    color var(--transition-fast),
-    background-color var(--transition-fast),
-    box-shadow var(--transition-fast);
-}
-
-.themePicker button:hover {
-  color: var(--color-text-primary);
-}
-
-.themePicker .selectedTheme {
-  color: var(--color-text-primary);
-  font-weight: 650;
-  background: var(--color-surface);
-  box-shadow: var(--shadow-control);
-}
-
-.selectedTheme svg:last-child {
-  color: var(--color-accent);
-}
-
-.accountStatus {
-  display: flex;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-4);
-  background: color-mix(in srgb, var(--color-success) 9%, transparent);
-  border-radius: var(--radius-lg);
-}
-
-.accountStatus > span {
-  display: grid;
-  width: 30px;
-  height: 30px;
-  flex: 0 0 auto;
-  color: var(--color-success);
-  background: color-mix(in srgb, var(--color-success) 15%, transparent);
-  border-radius: 50%;
-  place-items: center;
-}
-
-.accountStatus strong {
-  font-size: var(--font-size-sm);
-}
-
-.accountStatus p {
-  margin: var(--space-1) 0 0;
-  color: var(--color-text-secondary);
-  font-size: var(--font-size-xs);
-  line-height: 1.5;
-}
-
-@media (max-width: 900px) {
-  .layout {
-    grid-template-columns: 1fr;
-  }
-}
-
 @media (max-width: 600px) {
   .page {
     gap: var(--space-7);
     padding-block: 0 var(--space-7);
   }
 
-  .profileCard,
-  .preferences {
+  .profileCard {
     border-radius: var(--radius-xl);
   }
 

@@ -1,0 +1,299 @@
+.backdrop {
+  position: fixed;
+  z-index: 1100;
+  inset: 0;
+  display: grid;
+  padding: var(--space-5);
+  overflow-y: auto;
+  background: rgb(0 0 0 / 40%);
+  backdrop-filter: blur(20px) saturate(140%);
+  -webkit-backdrop-filter: blur(20px) saturate(140%);
+  animation: quizBackdropIn 200ms ease both;
+  place-items: center;
+}
+
+.modal {
+  width: min(100%, 680px);
+  overflow: hidden;
+  background: color-mix(
+    in srgb,
+    var(--color-background-elevated) 92%,
+    transparent
+  );
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-2xl);
+  box-shadow: 0 34px 110px rgb(0 0 0 / 38%);
+  backdrop-filter: blur(32px) saturate(165%);
+  -webkit-backdrop-filter: blur(32px) saturate(165%);
+  animation: quizModalIn 360ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.header {
+  display: grid;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-5) var(--space-5) var(--space-4);
+  grid-template-columns: auto minmax(0, 1fr) auto;
+}
+
+.quizIcon {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  color: var(--color-accent);
+  background: var(--color-accent-soft);
+  border-radius: 14px;
+  place-items: center;
+}
+
+.header > div {
+  display: grid;
+  gap: 2px;
+}
+
+.header strong {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-md);
+  letter-spacing: -0.02em;
+}
+
+.header div span {
+  color: var(--color-text-tertiary);
+  font-size: var(--font-size-xs);
+}
+
+.closeButton {
+  display: grid;
+  width: 38px;
+  height: 38px;
+  color: var(--color-text-secondary);
+  background: var(--color-control);
+  border-radius: 50%;
+  cursor: pointer;
+  place-items: center;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.closeButton:hover {
+  color: var(--color-text-primary);
+  background: var(--color-control-hover);
+  transform: scale(1.04);
+}
+
+.progress {
+  height: 3px;
+  margin: 0 var(--space-5);
+  overflow: hidden;
+  background: var(--color-control);
+  border-radius: var(--radius-pill);
+}
+
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--color-accent);
+  border-radius: inherit;
+  transition: width 360ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.question {
+  min-height: 390px;
+  padding: clamp(var(--space-6), 6vw, var(--space-8));
+  animation: questionIn 280ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.question > span {
+  color: var(--color-accent);
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+.question h2 {
+  margin: var(--space-2) 0 0;
+  color: var(--color-text-primary);
+  font-size: clamp(1.75rem, 5vw, 2.65rem);
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+}
+
+.question > p {
+  margin: var(--space-3) 0 0;
+  color: var(--color-text-secondary);
+  line-height: 1.55;
+}
+
+.options {
+  display: grid;
+  gap: var(--space-2);
+  margin-top: var(--space-6);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.options button {
+  display: flex;
+  min-height: 54px;
+  min-width: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  color: var(--color-text-secondary);
+  text-align: left;
+  background: color-mix(in srgb, var(--color-control) 72%, transparent);
+  border: 1px solid var(--color-border-highlight);
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.options button:hover {
+  color: var(--color-text-primary);
+  background: var(--color-control-hover);
+  transform: translateY(-1px);
+}
+
+.options .selectedOption {
+  color: var(--color-text-primary);
+  background: var(--color-accent-soft);
+  border-color: color-mix(in srgb, var(--color-accent) 36%, transparent);
+  box-shadow: 0 8px 22px rgb(0 122 255 / 10%);
+}
+
+.options i {
+  display: grid;
+  width: 24px;
+  height: 24px;
+  flex: 0 0 24px;
+  color: #ffffff;
+  font-style: normal;
+  background: transparent;
+  border: 1px solid var(--color-border);
+  border-radius: 50%;
+  place-items: center;
+}
+
+.options .selectedOption i {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-5) var(--space-5);
+  border-top: 1px solid var(--color-border);
+}
+
+.footer button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-5);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    opacity var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.footer button:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.footer button:disabled {
+  opacity: 0.38;
+  cursor: default;
+}
+
+.backButton {
+  color: var(--color-text-secondary);
+  background: var(--color-control);
+}
+
+.continueButton {
+  color: #ffffff;
+  background: var(--color-accent);
+  box-shadow: 0 8px 24px rgb(0 122 255 / 22%);
+}
+
+@keyframes quizBackdropIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes quizModalIn {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.975);
+  }
+}
+
+@keyframes questionIn {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+}
+
+@media (max-width: 600px) {
+  .backdrop {
+    align-items: end;
+    padding: 0;
+  }
+
+  .modal {
+    max-height: 94dvh;
+    overflow-y: auto;
+    border-radius: var(--radius-2xl) var(--radius-2xl) 0 0;
+  }
+
+  .question {
+    min-height: 0;
+    padding: var(--space-6) var(--space-5);
+  }
+
+  .options {
+    grid-template-columns: 1fr;
+  }
+
+  .footer {
+    position: sticky;
+    bottom: 0;
+    background: color-mix(
+      in srgb,
+      var(--color-background-elevated) 92%,
+      transparent
+    );
+    backdrop-filter: blur(20px);
+  }
+
+  .footer button {
+    flex: 1;
+    padding-inline: var(--space-3);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .backdrop,
+  .modal,
+  .question {
+    animation: none;
+  }
+}

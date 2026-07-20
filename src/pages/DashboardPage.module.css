@@ -81,11 +81,14 @@
 
 .explorer {
   display: grid;
-  gap: var(--space-7);
+  gap: var(--space-5);
 }
 
-.destinations {
-  display: grid;
+.explorerView {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  justify-self: stretch;
 }
 
 .globeLoading {
@@ -99,6 +102,242 @@
   border: 1px solid var(--color-border-highlight);
   border-radius: var(--radius-2xl);
   box-shadow: var(--shadow-card);
+}
+
+.explorerControls {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  transform: translateY(-50%);
+}
+
+.viewToggle {
+  position: relative;
+  display: inline-grid;
+  width: 148px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  justify-self: start;
+  padding: 2px;
+  background: var(--color-control);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+}
+
+.viewToggle::before {
+  position: absolute;
+  z-index: 0;
+  top: 2px;
+  bottom: 2px;
+  left: 2px;
+  width: calc((100% - 4px) / 2);
+  background: var(--color-surface);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-control);
+  content: '';
+  pointer-events: none;
+  transform: translateX(0);
+  transition: transform 300ms cubic-bezier(0.22, 0.8, 0.24, 1);
+}
+
+.viewToggle[data-view-mode='list']::before {
+  transform: translateX(100%);
+}
+
+.viewToggle button {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 10px;
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 600;
+  background: transparent;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    box-shadow var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.viewToggle button:hover {
+  color: var(--color-text-primary);
+}
+
+.viewToggle button:active {
+  transform: scale(0.97);
+}
+
+.viewToggle .activeView {
+  color: var(--color-text-primary);
+  background: transparent;
+  box-shadow: none;
+}
+
+.activeView svg {
+  color: var(--color-accent);
+}
+
+.quizButton {
+  --quiz-button-fill: var(--color-control);
+
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 var(--space-3);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  background: var(--quiz-button-fill);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  box-shadow: var(--shadow-control);
+  cursor: pointer;
+  text-transform: uppercase;
+  transition:
+    color var(--transition-fast),
+    background-color var(--transition-fast),
+    border-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.quizButton::before {
+  --quiz-highlight-angle: 0deg;
+
+  position: absolute;
+  z-index: 2;
+  inset: -1px;
+  padding: 1.5px;
+  background: conic-gradient(
+    from var(--quiz-highlight-angle),
+    transparent 0deg 258deg,
+    rgb(100 210 255 / 16%) 276deg,
+    rgb(255 255 255 / 96%) 298deg,
+    rgb(10 132 255 / 88%) 314deg,
+    transparent 338deg
+  );
+  border-radius: inherit;
+  content: '';
+  pointer-events: none;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+  animation: quizSpecular 2.4s linear infinite;
+}
+
+.quizButton:hover,
+.quizButtonActive {
+  --quiz-button-fill: var(--color-accent-soft);
+
+  color: var(--color-accent);
+}
+
+.quizButton:active {
+  transform: scale(0.97);
+}
+
+@property --quiz-highlight-angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes quizSpecular {
+  to {
+    --quiz-highlight-angle: 360deg;
+  }
+}
+
+.suggestions {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.suggestionsHeader {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--space-5);
+}
+
+.suggestionsHeader h2,
+.suggestionsHeader p {
+  margin: 0;
+}
+
+.suggestionsHeader h2 {
+  color: var(--color-text-primary);
+  font-size: var(--font-size-2xl);
+  letter-spacing: -0.04em;
+}
+
+.suggestionsHeader p {
+  margin-top: var(--space-1);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}
+
+.suggestionsHeader button {
+  display: inline-flex;
+  min-height: 42px;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0 var(--space-4);
+  color: var(--color-accent);
+  font-size: var(--font-size-sm);
+  font-weight: 650;
+  background: var(--color-accent-soft);
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition:
+    background-color var(--transition-fast),
+    transform var(--transition-fast);
+}
+
+.suggestionsHeader button:hover {
+  background: color-mix(in srgb, var(--color-accent) 17%, transparent);
+  transform: translateY(-1px);
+}
+
+.shuffleIcon {
+  animation: shuffleSpin 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.suggestedGrid {
+  animation: suggestionsIn 460ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes shuffleSpin {
+  from {
+    opacity: 0;
+    transform: rotate(-150deg) scale(0.72);
+  }
+}
+
+@keyframes suggestionsIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.99);
+  }
 }
 
 .globeLoading > span {
@@ -230,6 +469,24 @@
     border-radius: var(--radius-lg);
   }
 
+  .explorerControls {
+    position: relative;
+    top: auto;
+    right: auto;
+    justify-self: start;
+    transform: none;
+  }
+
+  .suggestionsHeader {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .suggestionsHeader button {
+    width: 100%;
+    justify-content: center;
+  }
+
   .errorPanel {
     flex-wrap: wrap;
   }
@@ -252,5 +509,19 @@
   .emptyState {
     min-height: 260px;
     border-radius: var(--radius-lg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quizButton::before {
+    animation: none;
+  }
+
+  .shuffleIcon {
+    animation: shuffleSpin 300ms ease !important;
+  }
+
+  .suggestedGrid {
+    animation: suggestionsIn 300ms ease !important;
   }
 }
