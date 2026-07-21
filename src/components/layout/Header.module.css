@@ -78,11 +78,8 @@
     inset 0 1px 1px rgb(255 255 255 / 35%),
     inset 0 -8px 16px rgb(0 45 120 / 16%);
   cursor: pointer;
-  backdrop-filter: blur(0);
-  -webkit-backdrop-filter: blur(0);
   transition:
     box-shadow 260ms ease,
-    filter 260ms ease,
     transform var(--transition-fast);
 }
 
@@ -100,7 +97,6 @@
 }
 
 .menuButton:active {
-  filter: blur(0.35px) saturate(1.1);
   transform: scale(0.94);
 }
 

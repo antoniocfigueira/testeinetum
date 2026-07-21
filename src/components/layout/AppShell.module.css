@@ -61,7 +61,7 @@
 .backdrop {
   position: fixed;
   z-index: 30;
-  top: calc(-1 * env(safe-area-inset-top));
+  top: 0;
   right: 0;
   bottom: 0;
   left: 0;
@@ -80,12 +80,13 @@
   color: var(--color-on-action);
   background: var(--color-action);
   border-radius: var(--radius-pill);
-  box-shadow: var(--shadow-floating);
+  box-shadow: none;
   transform: translateY(-160%);
   transition: transform var(--transition-fast);
 }
 
 .skipLink:focus {
+  box-shadow: var(--shadow-floating);
   transform: translateY(0);
 }
 
@@ -112,6 +113,7 @@
 
   .backdrop {
     display: block;
+    top: calc(68px + env(safe-area-inset-top));
   }
 
   .main {
@@ -120,6 +122,10 @@
 }
 
 @media (max-width: 600px) {
+  .backdrop {
+    top: calc(64px + env(safe-area-inset-top));
+  }
+
   .workspace {
     padding-top: calc(64px + env(safe-area-inset-top));
   }

@@ -39,11 +39,79 @@
     transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+.sidebar::before {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: var(--sidebar-collapsed-width);
+  padding: 1px;
+  background: linear-gradient(
+    115deg,
+    rgb(255 255 255 / 62%) 0%,
+    rgb(255 255 255 / 16%) 18%,
+    rgb(255 255 255 / 5%) 34%,
+    rgb(255 255 255 / 28%) 52%,
+    rgb(255 255 255 / 7%) 70%,
+    rgb(255 255 255 / 42%) 86%,
+    rgb(255 255 255 / 14%) 100%
+  );
+  background-position: 0% 50%;
+  background-size: 220% 100%;
+  border-radius: var(--sidebar-radius);
+  content: '';
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    width 420ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 140ms ease-out;
+  animation: sidebar-liquid-edge 7s ease-in-out infinite alternate;
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+:global(:root[data-theme='light']) .sidebar::before {
+  background: linear-gradient(
+    115deg,
+    rgb(255 255 255 / 92%) 0%,
+    rgb(60 60 67 / 13%) 22%,
+    rgb(255 255 255 / 38%) 38%,
+    rgb(60 60 67 / 8%) 60%,
+    rgb(255 255 255 / 82%) 82%,
+    rgb(60 60 67 / 10%) 100%
+  );
+  background-position: 0% 50%;
+  background-size: 220% 100%;
+}
+
 .edgeTrigger:hover + .sidebar,
 .sidebar:hover,
 .sidebar:has(:focus-visible) {
   clip-path: inset(0 0 0 0 round var(--sidebar-radius));
   transform: translate3d(3px, -50%, 0) scale(1.045);
+}
+
+.edgeTrigger:hover + .sidebar::before,
+.sidebar:hover::before {
+  width: 100%;
+  opacity: 1;
+}
+
+@keyframes sidebar-liquid-edge {
+  from {
+    background-position: 0% 50%;
+  }
+
+  to {
+    background-position: 100% 50%;
+  }
 }
 
 .brandRow {
@@ -276,6 +344,10 @@
     pointer-events: auto;
   }
 
+  .sidebar::before {
+    display: none;
+  }
+
   .brandRow {
     display: none;
   }
@@ -332,5 +404,9 @@
     transition:
       clip-path 300ms ease !important,
       transform 300ms ease !important;
+  }
+
+  .sidebar::before {
+    animation: none;
   }
 }

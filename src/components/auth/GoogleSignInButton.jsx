@@ -30,26 +30,63 @@ function GoogleSignInButton({ compact = false, onSuccess }) {
     )
   }
 
+  if (showIconOnly) {
+    return (
+      <div className={`${styles.wrapper} ${styles.compact}`}>
+        <div
+          aria-hidden={!isDark}
+          className={`${styles.compactVariant} ${
+            isDark ? styles.compactVariantActive : ''
+          }`}
+        >
+          <GoogleLogin
+            locale="pt-PT"
+            logo_alignment="center"
+            onError={handleError}
+            onSuccess={handleSuccess}
+            shape="circle"
+            size="large"
+            text="signin_with"
+            theme="filled_black"
+            type="icon"
+          />
+        </div>
+
+        <div
+          aria-hidden={isDark}
+          className={`${styles.compactVariant} ${
+            !isDark ? styles.compactVariantActive : ''
+          }`}
+        >
+          <GoogleLogin
+            locale="pt-PT"
+            logo_alignment="center"
+            onError={handleError}
+            onSuccess={handleSuccess}
+            shape="circle"
+            size="large"
+            text="signin_with"
+            theme="filled_blue"
+            type="icon"
+          />
+        </div>
+      </div>
+    )
+  }
+
   return (
-    <div className={`${styles.wrapper} ${showIconOnly ? styles.compact : ''}`}>
+    <div className={styles.wrapper}>
       <GoogleLogin
-        key={`${isDark ? 'dark' : 'light'}-${showIconOnly ? 'compact' : 'full'}`}
         locale="pt-PT"
-        logo_alignment={showIconOnly ? 'center' : 'left'}
+        logo_alignment="left"
         onError={handleError}
         onSuccess={handleSuccess}
-        shape={showIconOnly ? 'circle' : 'pill'}
+        shape="pill"
         size="large"
         text="signin_with"
-        theme={
-          showIconOnly
-            ? isDark
-              ? 'filled_black'
-              : 'filled_blue'
-            : 'outline'
-        }
-        type={showIconOnly ? 'icon' : 'standard'}
-        width={showIconOnly ? undefined : '210'}
+        theme="outline"
+        type="standard"
+        width="210"
       />
     </div>
   )
