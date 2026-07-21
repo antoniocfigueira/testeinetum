@@ -2,6 +2,7 @@
   position: relative;
   min-height: 100dvh;
   overflow: hidden;
+  background: var(--color-background);
   isolation: isolate;
 }
 
@@ -33,6 +34,8 @@
 }
 
 .workspace {
+  position: relative;
+  z-index: 1;
   display: flex;
   min-width: 0;
   min-height: 100dvh;

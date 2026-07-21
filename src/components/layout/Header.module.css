@@ -59,19 +59,62 @@
 
 .menuButton {
   display: none;
-  width: 42px;
-  height: 42px;
-  flex: 0 0 42px;
-  color: var(--color-text-primary);
-  background: var(--color-control);
+  width: 46px;
+  height: 46px;
+  flex: 0 0 46px;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  overflow: hidden;
+  color: #ffffff;
+  background: linear-gradient(
+    145deg,
+    color-mix(in srgb, var(--color-action) 58%, white) 0%,
+    var(--color-action) 48%,
+    color-mix(in srgb, var(--color-action) 78%, black) 100%
+  );
   border-radius: 50%;
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 35%),
+    inset 0 -8px 16px rgb(0 45 120 / 16%);
   cursor: pointer;
-  place-items: center;
+  backdrop-filter: blur(0);
+  -webkit-backdrop-filter: blur(0);
+  transition:
+    box-shadow 260ms ease,
+    filter 260ms ease,
+    transform var(--transition-fast);
+}
+
+.menuButton:hover {
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 42%),
+    inset 0 -8px 16px rgb(0 45 120 / 20%);
+}
+
+.menuButton:active {
+  filter: blur(0.35px) saturate(1.1);
+  transform: scale(0.94);
+}
+
+.menuButtonOpen {
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 44%),
+    inset 0 -8px 16px rgb(0 45 120 / 22%);
+  animation: menu-button-blur 260ms ease both;
 }
 
 @media (max-width: 900px) {
   .menuButton {
-    display: grid;
+    display: inline-flex;
+  }
+
+  .leading {
+    display: none;
+  }
+
+  .header {
+    justify-content: space-between;
   }
 }
 
@@ -87,5 +130,17 @@
 
   .brand strong {
     font-size: 1.15rem;
+  }
+}
+
+@keyframes menu-button-blur {
+  0% {
+    filter: blur(1px) saturate(1.2);
+    transform: scale(0.96);
+  }
+
+  100% {
+    filter: blur(0) saturate(1);
+    transform: scale(1);
   }
 }

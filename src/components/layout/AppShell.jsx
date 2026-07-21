@@ -4,6 +4,7 @@ import LoginPromptModal from '../auth/LoginPromptModal.jsx'
 import LoginPromptContext from '../../context/loginPromptContext.js'
 import Footer from './Footer.jsx'
 import Header from './Header.jsx'
+import InteractiveNetworkBackground from './InteractiveNetworkBackground.jsx'
 import Sidebar from './Sidebar.jsx'
 import styles from './AppShell.module.css'
 
@@ -38,6 +39,8 @@ function AppShell({ children, onLogout, user }) {
   return (
     <LoginPromptContext.Provider value={loginPromptValue}>
       <div className={styles.shell}>
+        <InteractiveNetworkBackground />
+
         <a className={styles.skipLink} href="#main-content">
           Saltar para o conteúdo
         </a>
@@ -60,8 +63,9 @@ function AppShell({ children, onLogout, user }) {
 
         <div className={styles.workspace}>
           <Header
+            isSidebarOpen={isSidebarOpen}
             onLogout={onLogout}
-            onMenuOpen={() => setIsSidebarOpen(true)}
+            onMenuOpen={() => setIsSidebarOpen((currentValue) => !currentValue)}
             user={user}
           />
 

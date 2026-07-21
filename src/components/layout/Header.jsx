@@ -1,26 +1,29 @@
-import { Menu, Plane } from 'lucide-react'
+import { Globe2, Plane } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import GoogleSignInButton from '../auth/GoogleSignInButton.jsx'
 import ThemeToggle from '../ThemeToggle/ThemeToggle.jsx'
 import ProfileMenu from './ProfileMenu.jsx'
 import styles from './Header.module.css'
 
-function Header({ onLogout, onMenuOpen, user }) {
+function Header({ isSidebarOpen, onLogout, onMenuOpen, user }) {
   return (
     <header className={styles.header}>
-      <div className={styles.leading}>
-        <button
-          aria-controls="app-sidebar"
-          aria-label="Abrir menu de navegação"
-          className={styles.menuButton}
-          onClick={onMenuOpen}
-          type="button"
-        >
-          <Menu size={21} />
-        </button>
+      <button
+        aria-controls="app-sidebar"
+        aria-expanded={isSidebarOpen}
+        aria-label="Abrir navegação"
+        className={`${styles.menuButton} ${
+          isSidebarOpen ? styles.menuButtonOpen : ''
+        }`}
+        onClick={onMenuOpen}
+        type="button"
+      >
+        <Globe2 size={23} strokeWidth={1.9} />
+      </button>
 
+      <div className={styles.leading}>
         <Link
-          aria-label="Inetum Travel — Dashboard"
+          aria-label="Inetum Travel - Dashboard"
           className={styles.brand}
           to="/dashboard"
         >
@@ -47,4 +50,3 @@ function Header({ onLogout, onMenuOpen, user }) {
 }
 
 export default Header
-

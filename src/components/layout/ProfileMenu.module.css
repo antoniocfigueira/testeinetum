@@ -142,6 +142,16 @@
   }
 }
 
+@media (max-width: 700px) {
+  .trigger {
+    box-shadow: none;
+  }
+
+  .trigger:hover {
+    box-shadow: none;
+  }
+}
+
 
 @media (max-width: 600px) {
   .trigger {
