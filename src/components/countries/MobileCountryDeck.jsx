@@ -1,4 +1,4 @@
-import { ArrowLeft, ArrowRight, Shuffle } from 'lucide-react'
+import { ArrowLeft, ArrowRight } from 'lucide-react'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import useAuth from '../../hooks/useAuth.js'
 import useFavorites from '../../hooks/useFavorites.js'
@@ -249,16 +249,6 @@ function MobileCountryDeck({ countries, onSelectCountry }) {
         })}
       </div>
 
-      <div className={styles.deckActions}>
-        <button onClick={() => dismissTopCard('left')} type="button">
-          <Shuffle size={18} />
-          Outra sugestão
-        </button>
-        <button onClick={() => onSelectCountry(deckCountries[0])} type="button">
-          Ver {deckCountries[0].name}
-          <ArrowRight size={18} />
-        </button>
-      </div>
     </section>
   )
 }

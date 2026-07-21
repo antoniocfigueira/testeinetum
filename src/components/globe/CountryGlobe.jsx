@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { geoContains } from 'd3-geo'
+import { ChevronRight } from 'lucide-react'
 import Globe from 'react-globe.gl'
 import { MeshStandardMaterial, ShaderMaterial, Vector3 } from 'three'
 import { feature } from 'topojson-client'
@@ -590,6 +591,12 @@ function CountryGlobe({
               <small>Na mira</small>
               <strong>{aimedCountry.name}</strong>
             </div>
+            <ChevronRight
+              aria-hidden="true"
+              className={styles.aimCardIndicator}
+              size={18}
+              strokeWidth={2.2}
+            />
           </button>
         )}
       </div>

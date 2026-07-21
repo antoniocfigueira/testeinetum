@@ -92,6 +92,13 @@
     inset 0 -8px 16px rgb(0 45 120 / 20%);
 }
 
+.menuButton:focus-visible {
+  outline: none;
+  box-shadow:
+    inset 0 1px 1px rgb(255 255 255 / 35%),
+    inset 0 -8px 16px rgb(0 45 120 / 16%);
+}
+
 .menuButton:active {
   filter: blur(0.35px) saturate(1.1);
   transform: scale(0.94);
@@ -101,7 +108,6 @@
   box-shadow:
     inset 0 1px 1px rgb(255 255 255 / 44%),
     inset 0 -8px 16px rgb(0 45 120 / 22%);
-  animation: menu-button-blur 260ms ease both;
 }
 
 @media (max-width: 900px) {
@@ -130,17 +136,5 @@
 
   .brand strong {
     font-size: 1.15rem;
-  }
-}
-
-@keyframes menu-button-blur {
-  0% {
-    filter: blur(1px) saturate(1.2);
-    transform: scale(0.96);
-  }
-
-  100% {
-    filter: blur(0) saturate(1);
-    transform: scale(1);
   }
 }

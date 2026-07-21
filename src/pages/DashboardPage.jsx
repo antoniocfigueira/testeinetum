@@ -15,6 +15,7 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
 } from 'react'
 import { flushSync } from 'react-dom'
@@ -100,8 +101,10 @@ function DashboardPage({ isActive = true }) {
   const [isQuizOpen, setIsQuizOpen] = useState(false)
   const [quizAnswers, setQuizAnswers] = useState({})
   const [quizCountryIds, setQuizCountryIds] = useState(null)
+  const [isRandomizing, setIsRandomizing] = useState(false)
   const [suggestionSeed, setSuggestionSeed] = useState(() => Math.random())
   const [viewMode, setViewMode] = useState('globe')
+  const randomizeFeedbackTimerRef = useRef(null)
   const debouncedQuery = useDebouncedValue(searchQuery, 300)
   const isSearchPending = searchQuery !== debouncedQuery
   const stats = useMemo(() => getDashboardStats(countries), [countries])
@@ -139,6 +142,11 @@ function DashboardPage({ isActive = true }) {
     loadCountryGlobe().catch(() => null)
   }, [])
 
+  useEffect(
+    () => () => window.clearTimeout(randomizeFeedbackTimerRef.current),
+    [],
+  )
+
   useEffect(() => {
     if (!isActive) {
       setSelectedCountry(null)
@@ -159,7 +167,13 @@ function DashboardPage({ isActive = true }) {
   }, [])
 
   const randomizeSuggestions = () => {
+    window.clearTimeout(randomizeFeedbackTimerRef.current)
+    setIsRandomizing(true)
     setSuggestionSeed(Math.random())
+    randomizeFeedbackTimerRef.current = window.setTimeout(
+      () => setIsRandomizing(false),
+      620,
+    )
   }
 
   const completeQuiz = useCallback(
@@ -315,7 +329,11 @@ function DashboardPage({ isActive = true }) {
                     </p>
                   </div>
                   {listCountryPool.length > 1 && (
-                    <button onClick={randomizeSuggestions} type="button">
+                    <button
+                      className={isRandomizing ? styles.randomizing : undefined}
+                      onClick={randomizeSuggestions}
+                      type="button"
+                    >
                       <Shuffle
                         className={styles.shuffleIcon}
                         key={suggestionSeed}

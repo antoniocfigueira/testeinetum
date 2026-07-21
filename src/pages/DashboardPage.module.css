@@ -352,10 +352,12 @@
     transform var(--transition-fast);
 }
 
-.suggestionsHeader button:hover {
-  color: var(--color-on-action);
-  background: var(--color-action);
-  transform: translateY(-1px);
+@media (hover: hover) and (pointer: fine) {
+  .suggestionsHeader button:hover {
+    color: var(--color-on-action);
+    background: var(--color-action);
+    transform: translateY(-1px);
+  }
 }
 
 .shuffleIcon {
@@ -370,6 +372,20 @@
   from {
     opacity: 0;
     transform: rotate(-150deg) scale(0.72);
+  }
+}
+
+@keyframes suggestionButtonFeedback {
+  0%,
+  100% {
+    color: var(--color-action);
+    background: transparent;
+  }
+
+  24%,
+  66% {
+    color: var(--color-on-action);
+    background: var(--color-action);
   }
 }
 
@@ -561,6 +577,10 @@
   .suggestionsHeader button {
     width: 100%;
     justify-content: center;
+  }
+
+  .suggestionsHeader button.randomizing {
+    animation: suggestionButtonFeedback 620ms ease-in-out both;
   }
 
   .errorPanel {

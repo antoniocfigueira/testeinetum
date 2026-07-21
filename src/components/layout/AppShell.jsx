@@ -2,6 +2,7 @@ import { useCallback, useEffect, useMemo, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import LoginPromptModal from '../auth/LoginPromptModal.jsx'
 import LoginPromptContext from '../../context/loginPromptContext.js'
+import useTheme from '../../hooks/useTheme.js'
 import Footer from './Footer.jsx'
 import Header from './Header.jsx'
 import InteractiveNetworkBackground from './InteractiveNetworkBackground.jsx'
@@ -13,6 +14,7 @@ function AppShell({ children, onLogout, user }) {
   const [loginPromptReason, setLoginPromptReason] = useState(null)
   const location = useLocation()
   const navigate = useNavigate()
+  const { isDark } = useTheme()
 
   const openLoginPrompt = useCallback((reason = 'favorites') => {
     setLoginPromptReason(reason)
@@ -30,6 +32,22 @@ function AppShell({ children, onLogout, user }) {
     openLoginPrompt(requestedReason)
     navigate(location.pathname, { replace: true, state: null })
   }, [location.pathname, location.state, navigate, openLoginPrompt, user])
+
+  useEffect(() => {
+    const themeColor = document.querySelector('meta[name="theme-color"]')
+
+    if (!themeColor) return undefined
+
+    const regularColor = isDark ? '#252527' : '#fbfbfd'
+    const overlayColor = isDark ? '#171718' : '#9c9c9d'
+
+    themeColor.setAttribute(
+      'content',
+      isSidebarOpen ? overlayColor : regularColor,
+    )
+
+    return () => themeColor.setAttribute('content', regularColor)
+  }, [isDark, isSidebarOpen])
 
   const loginPromptValue = useMemo(
     () => ({ openLoginPrompt }),
